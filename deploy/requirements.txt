@@ -1,0 +1,10 @@
+boto3
+mysql-connector
+snowflake-connector-python
+requests
+numpy
+moto
+mock
+coverage
+pathlib
+presto-python-client
