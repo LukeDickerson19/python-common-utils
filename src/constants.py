@@ -22,12 +22,12 @@ PROPERTY_FILEPATH       = os.path.join(SRC_PATH, 'config.properties')
 ACCESS_REQUEST_TEMPLATE = os.path.join(SRC_PATH, 'access_request_template.json')
 TEST_OUTPUT_TEMPLATE    = os.path.join(SRC_PATH, 'test_output_template_CCPA.json')
 
-# logging constants
-# log_filepath declared in driver.py
-OUTPUT_TO_CONSOLE = True
-OUTPUT_TO_LOGFILE = True
-INDENT            = '|   '
-DRAW_LINE         = False
+# # logging constants
+# # log_filepath declared in driver.py
+# OUTPUT_TO_CONSOLE = True
+# OUTPUT_TO_LOGFILE = True
+# INDENT            = '|   '
+# DRAW_LINE         = False
 
 # snowflake constants
 SNOWFLAKE_USER = 'sf_user'

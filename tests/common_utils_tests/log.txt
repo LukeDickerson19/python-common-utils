@@ -1,0 +1,69 @@
+a
+    b
+        c
+            d
+                e
+                    indented
+                    multi
+                    line
+                    string
+    
+    new_line_start=True, draw_line=False
+        
+    new_line_start=True, draw_line=True
+    new_line_start=False
+    new_line_end=True, draw_line=False
+    
+    new_line_end=True, draw_line=True
+        
+    new_line_end=False
+            {
+                "a": 1,
+                "b": 2,
+                "c": 3
+            }
+            aaaa
+            bbb
+            cc
+            d
+
+            a
+            bb
+            ccc
+            dddd
+
+            a
+            b
+            b
+            c
+            c
+            c
+            d
+            d
+            d
+            d
+
+            a
+            a
+            a
+            a
+            b
+            b
+            b
+            c
+            c
+            d
+a
+    b
+        c
+            d
+                e
+                    indented
+                    multi
+                    line
+                    string
+            testing
+            print_same_line()
+            after
+            regular print()
+            testing regular print() after print_same_line() again
