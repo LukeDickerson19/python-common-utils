@@ -2,6 +2,7 @@ from constants import *
 import sys
 
 
+
 ''' init_log()
 
     Description:
@@ -51,7 +52,6 @@ def init_log(
 
     Returns:
         Nothing
-
     '''
 def pprint(
     string='',
@@ -77,5 +77,26 @@ def pprint(
         logfile = open(LOGFILE_PATH, 'a')
         output(logfile)
         logfile.close()
+
+
+''' pprint_dct()
+
+    Description:
+        pprint a dictionary using json library's indentation
+
+    Arguments:
+        dct0 ...... dict ............. dictionary to print
+        int ....... num_indents ...... number of indents to put in front of the string
+        boolean ... new_line_start ... print a new line in before the string
+
+    Returns:
+        Nothing
+
+    '''
+def pprint_dct(dct0, num_indents=0):
+    pprint(json.dumps(dct0, indent=4),
+        num_indents=num_indents)
+
+
 
 
