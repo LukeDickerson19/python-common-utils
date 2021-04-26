@@ -1,49 +1,46 @@
 # common_utils
 
 
-
 #### DESCRIPTION
 ```
-utility functions for automating microsoft outlook email capabilities
+Utility functions for common backend processes:
+	logging utils
+	aws utils
+	snowflake utils
+	mysql utils
+	oracle utils
+	emails utils
+	general utils
 
-NOTE: can't send .py files as an attachment
-	Microsoft Outlook Security Software doesn't trust .py files
-		https://social.technet.microsoft.com/Forums/office/en-US/94f10c8d-6c1e-4fce-a3c2-644da20d7b2a/this-item-contains-attachments-that-are-potentially-unsafe-recipients-using-microsoft-outlook-may?forum=outlook
+Visit each util subfolder in the common_utils folder for usage and details on the functions each util provides.
 ```
 
 #### TO DO
 ```
-useful functions to create
+restructure each *_util.py file in the src folder to be like the util folders in the common_utils folder
 
-	reply to email
-		calls function to find email based on subject
-		how do I reply to a specific email?
-			make the send function take an argument
-			that is a boolean or string flagging if the email
-			to be sent should be a new email or a reply to another
-			email and if its a reply to another email, the send
-			function will have optional arguments of which email
-			message object to respond to and the send functions will then ... tbd
+	what i've fixed up so far is
+		common_utils/logging_utils
+		common_utils/email_utils/outlook_utils
 
-	it would also be cool if i figured out how to get all message in a specific inbox sub folder
-		i think i'd just need to specify the subfolder in the get_all_messages_in_folder
-		https://www.mathworks.com/matlabcentral/answers/44967-retrieve-a-specific-folder-in-outlook
+	for each one you need to see what constants it uses in src/constants.py
+		and replicate the exact structure of the:
+			<util_folders>/<util>/src/libraries_and_constants.py
 
-figure out
-	the codes for the different msg.Class
-		43 is for MailItem
-		46 is for ReportItem
-		and theres a bunch of codes for stuff related to MeetingItem
-			see docs: https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.outlook.olobjectclass?view=outlook-pia
+		maybe put it all in a cicd (or deploy) folder
+			\deploy\
+				parse_NOTES_to_README.py
 
-figure out whats wrong with outlook desktop
-	once i sent an email, the app started updating my inbox
-	how do i "update outlook desktop inbox automatically?"
-```
+fix up general utils
+	required for aws_utils to work
 
-#### SOURCES
-```
-pywin32 (aka win32com)
-https://www.excelcise.org/python-outlook-send-outlook-html-email-pywin32/
-https://pbpython.com/windows-com.html
+fix up aws utils
+
+clean up the notes above each function
+	or maybe make a docs page in markdown
+
+make common_components a python lib
+	see this link too
+	https://medium.com/analytics-vidhya/how-to-create-a-python-library-7d5aea80cc3f
+https://medium.com/@joel.barmettler/how-to-upload-your-python-package-to-pypi-65edc5fe9c56
 ```
