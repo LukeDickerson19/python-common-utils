@@ -8,7 +8,7 @@ Line 1
 
 
 
-### DESCRIPTION
+#### DESCRIPTION
 ```
 	utility functions for automating microsoft outlook email capabilities
 
@@ -17,7 +17,7 @@ Line 1
 			https://social.technet.microsoft.com/Forums/office/en-US/94f10c8d-6c1e-4fce-a3c2-644da20d7b2a/this-item-contains-attachments-that-are-potentially-unsafe-recipients-using-microsoft-outlook-may?forum=outlook
 ```
 
-### TO DO:
+#### TO DO
 ```
 	useful functions to create
 
@@ -47,7 +47,7 @@ Line 1
 		how do i "update outlook desktop inbox automatically?"
 ```
 
-### SOURCES
+#### SOURCES
 ```
 	pywin32 (aka win32com)
 	https://www.excelcise.org/python-outlook-send-outlook-html-email-pywin32/
