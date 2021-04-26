@@ -4,13 +4,13 @@
 #### DESCRIPTION
 ```
 Utility functions for common backend processes:
-	logging utils
-	aws utils
-	snowflake utils
-	mysql utils
-	oracle utils
-	emails utils
-	general utils
+	logging_utils
+	aws_utils
+	snowflake_utils
+	mysql_utils
+	oracle_sql_utils
+	emails_utils
+	general_utils
 
 Visit each util subfolder in the common_utils folder for
 usage and details on the functions each util provides.
