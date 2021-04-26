@@ -12,7 +12,8 @@ Utility functions for common backend processes:
 	emails utils
 	general utils
 
-Visit each util subfolder in the common_utils folder for usage and details on the functions each util provides.
+Visit each util subfolder in the common_utils folder for
+usage and details on the functions each util provides.
 ```
 
 #### TO DO

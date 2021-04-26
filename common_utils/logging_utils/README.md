@@ -12,11 +12,8 @@ tool that makes it easy to organize log files and console output
 see tests folder for how to import properly
 	driver.py and libraries_and_constants.py
 
-then create a log object with:
-log = logging_utils.Log(LOG_FILEPATH)
-
-then print to the log and/or console with:
-log.print('hello world', num_indents=0)
+log = logging_utils.Log(LOG_FILEPATH) # then create a log object with
+log.print('hello world', num_indents=0) # print to the log and/or console with
 
 the optional argument num_indents makes it really easy to
 indent text you write to the log.
