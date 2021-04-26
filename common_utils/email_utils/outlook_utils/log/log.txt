@@ -1,0 +1,6 @@
+
+Running Outlook Utils Tests:
+    Test Function: connect_to_outlook ............................ SUCCEEDED
+    Test Function: test_get_all_messages_in_inbox ................ SUCCEEDED
+    Test Function: test_send_message ............................. SUCCEEDED
+    Test Function: test_find_message_in_inbox .................... SUCCEEDED

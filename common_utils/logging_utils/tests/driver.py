@@ -1,13 +1,5 @@
-import os
-import sys
-import time
-import pathlib
-REPO_PATH  = str(pathlib.Path(__file__).resolve().parent.parent.parent)
-SRC_PATH   = os.path.join(REPO_PATH, 'src')
-UTILS_PATH = os.path.join(REPO_PATH, 'common_utils')
-sys.path.append(SRC_PATH)
-sys.path.append(UTILS_PATH)
-import logging_utils
+from libraries_and_constants import *
+
 
 
 def test_print(log):
@@ -137,7 +129,7 @@ def test_print_same_line(log):
 
 if __name__ == '__main__':
 
-	log = logging_utils.Log('./log.txt')
+	log = logging_utils.Log(LOG_FILEPATH)
 	test_print(log)
 	test_print_dct(log)
 	test_print_same_line(log)

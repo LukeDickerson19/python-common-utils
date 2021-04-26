@@ -6,6 +6,11 @@ import pathlib
 import json
 from jsondiff import diff
 import numpy as np
+import pandas as pd
+pd.set_option('display.max_rows', 10)
+pd.set_option('display.max_columns', 20)
+pd.set_option('display.max_colwidth', 200)
+pd.set_option('display.width', 1000)
 from datetime import datetime, timedelta, timezone
 import pytz
 import requests

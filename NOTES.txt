@@ -1,0 +1,46 @@
+
+
+
+DESCRIPTION
+
+	Utility functions for common backend processes:
+		logging utils
+		aws utils
+		snowflake utils
+		mysql utils
+		oracle utils
+		emails utils
+		general utils
+
+	Visit each util subfolder in the common_utils folder for details on the functions each util provides.
+
+
+TO DO
+
+	restructure each *_util.py file in the src folder to be like the util folders in the common_utils folder
+
+		what i've fixed up so far is
+			common_utils/logging_utils
+			common_utils/email_utils/outlook_utils
+
+		for each one you need to see what constants it uses in src/constants.py
+			and replicate the exact structure of the:
+				<util_folders>/<util>/src/libraries_and_constants.py
+
+		give each one its own readme too
+			write python script to convert NOTES.txt to README.md markup
+				in the markup (nothing fancy) make:
+					DESCRIPTION, TO DO, SOURCES, ect. all bold text with big size
+					all four space characters converted to tabs
+					all tabs converted to tabs in markup
+					all other regular text stays the same
+					see if text wraps automatically in README.md on github
+
+	fix up general utils
+		required for aws_utils to work
+
+	fix up aws utils
+
+	clean up the notes above each function
+
+

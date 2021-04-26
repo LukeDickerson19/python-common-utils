@@ -1,5 +1,4 @@
-from constants import *
-import sys
+from logging_libraries_and_constants import *
 
 
 
@@ -33,48 +32,14 @@ class Log:
         self.output_to_console = output_to_console
         self.output_to_logfile = output_to_logfile
         self.indent = indent
+
+        # clear log
         if clear_old_log:
-            open(self.path, 'w').close() # clear log
-        self.blanked_out_previous_string = [] # used for print_same_line()
-        self.same_line_string = False # used for print_same_line()
+            open(self.path, 'w').close()
 
-    ''' get_indented_string()
-
-        Description:
-            create a string with string0, indent0, and other optional arguments that is concatenated properly for printing
-
-        Arguments:
-            string0 .......... string .... what will be printed
-            indent0 .......... string .... what an indent looks like
-            num_indents ...... int ....... number of indents to put in front of the string
-            new_line_start ... boolean ... print a new line in before the string
-            new_line_end ..... boolean ... print a new line in after the string
-            draw_line ........ boolean ... draw a line on the blank line before or after the string
-
-        Returns:
-            string ... string ... string0 with indent0 and other optional arguments concatenated properly
-
-        '''
-    @staticmethod
-    def get_indented_string(
-        string0,
-        indent0,
-        num_indents=0,
-        new_line_start=False,
-        new_line_end=False,
-        draw_line=False):
-
-        total_indent0 = ''.join([indent0] * num_indents)
-        total_indent1 = ''.join([indent0] * (num_indents + 1))
-        string = ''
-        if new_line_start:
-            string += (total_indent1 if draw_line else total_indent0) + '\n'
-        for s in string0.split('\n'):
-            string += total_indent0 + s + '\n'
-        if new_line_end:
-            string += (total_indent1 if draw_line else total_indent0) + '\n'
-        string = string[:-1] # remove final newline character
-        return string
+        # variables used for print_same_line()
+        self.blanked_out_previous_string = []
+        self.same_line_string = False
 
     ''' print()
 
@@ -180,6 +145,10 @@ class Log:
 
         Description:
             print over the same line as the previous time print_same_line() was called.
+            NOTE:
+                It only seems to work on linux. On windows it prints
+                to the next line instead of the same line
+
 
         Arguments:
             string ........... string .... what will be printed
@@ -227,4 +196,42 @@ class Log:
 
         return console_str, logfile_str
 
+
+    ''' get_indented_string()
+
+        Description:
+            create a string with string0, indent0, and other optional arguments that is concatenated properly for printing
+
+        Arguments:
+            string0 .......... string .... what will be printed
+            indent0 .......... string .... what an indent looks like
+            num_indents ...... int ....... number of indents to put in front of the string
+            new_line_start ... boolean ... print a new line in before the string
+            new_line_end ..... boolean ... print a new line in after the string
+            draw_line ........ boolean ... draw a line on the blank line before or after the string
+
+        Returns:
+            string ... string ... string0 with indent0 and other optional arguments concatenated properly
+
+        '''
+    @staticmethod
+    def get_indented_string(
+        string0,
+        indent0,
+        num_indents=0,
+        new_line_start=False,
+        new_line_end=False,
+        draw_line=False):
+
+        total_indent0 = ''.join([indent0] * num_indents)
+        total_indent1 = ''.join([indent0] * (num_indents + 1))
+        string = ''
+        if new_line_start:
+            string += (total_indent1 if draw_line else total_indent0) + '\n'
+        for s in string0.split('\n'):
+            string += total_indent0 + s + '\n'
+        if new_line_end:
+            string += (total_indent1 if draw_line else total_indent0) + '\n'
+        string = string[:-1] # remove final newline character
+        return string
 
