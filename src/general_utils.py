@@ -26,10 +26,8 @@ class Properties:
             string ........... key ....... the string used to identify the desired value in the .properties file
 
         Returns:
-            tuple ...
-                string ....... value ..... the value associated with the specified section and key in the .properties file
-                                           or None if [section] and/or key don't exist in the .properties file
-                successful ... boolean ... flag if the function executed successfully without any errors
+            string ....... value ..... the value associated with the specified section and key in the .properties file
+                                       or None if [section] and/or key don't exist in the .properties file
 
         '''
     def get(
@@ -39,10 +37,6 @@ class Properties:
 
         try:
             value = eval(self.config.get(section, key))
-            successful = True
         except Exception as e:
             value = None
-            successful = False
-        return value, successful
-
-
+        return value

@@ -43,4 +43,7 @@ TO DO
 
 	clean up the notes above each function
 
-
+	make common_components a python lib
+		see this link too
+		https://medium.com/analytics-vidhya/how-to-create-a-python-library-7d5aea80cc3f
+	https://medium.com/@joel.barmettler/how-to-upload-your-python-package-to-pypi-65edc5fe9c56
