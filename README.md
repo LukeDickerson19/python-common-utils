@@ -2,12 +2,6 @@
 
 
 
-Line 1
-> line 2 
->> line 3
-
-
-
 #### DESCRIPTION
 ```
 	utility functions for automating microsoft outlook email capabilities
