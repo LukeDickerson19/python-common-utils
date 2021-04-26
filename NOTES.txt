@@ -36,6 +36,10 @@ TO DO
 					all other regular text stays the same
 					see if text wraps automatically in README.md on github
 
+			maybe put it all in a cicd (or deploy) folder
+				\deploy\
+					parse_NOTES_to_README.py
+
 	fix up general utils
 		required for aws_utils to work
 
