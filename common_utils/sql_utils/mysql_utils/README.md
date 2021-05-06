@@ -1,5 +1,5 @@
 # MySQL Utilities
-easy to use wrapper for the mysql.connector python library with logging utils integrated
+
 
 
 #### DESCRIPTION
