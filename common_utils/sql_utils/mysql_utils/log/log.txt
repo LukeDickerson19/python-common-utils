@@ -1,0 +1,5 @@
+
+Running MySQL Utils Tests:
+    Test Function: connect_to_mysql_db ............................ SUCCEEDED
+    Test Function: test_get_all_messages_in_inbox ................. SUCCEEDED
+    Test Function: close_db_connection ............................ SUCCEEDED

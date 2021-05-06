@@ -13,7 +13,7 @@ class Log:
             log_filepath ........ string .... complete path to the log file
             output_to_console ... boolean ... flag to print to the console or not
             output_to_logfile ... boolean ... flag to print to the log file or not
-            string .............. indent .... what an indent looks like in the log
+            indent .............. string .... what an indent looks like in the log
             clear_old_log ....... boolean ... flag to clear the log file or not
 
         Returns:

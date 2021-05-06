@@ -35,8 +35,7 @@ DATA_PATH = os.path.join(
 	COMMON_UTILS_REPO_PATH, 'common_utils', 'email_utils', 'outlook_utils', 'data')
 # print('DATA_PATH\t', DATA_PATH)
 
-TEST_VERBOSE = False
-
+TEST_VERBOSE       = False
 TEST_EMAIL_FROM    = 'ld085a@att.com'
 TEST_EMAIL_TO      = ['ld085a@att.com']
 TEST_EMAIL_SUBJECT = 'Test Hello World'

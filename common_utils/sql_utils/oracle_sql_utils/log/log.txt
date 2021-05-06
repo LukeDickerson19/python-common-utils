@@ -1,0 +1,5 @@
+
+Running Oracle SQL Utils Tests:
+    Test Function: connect_to_oracle_sql_db ....................... SUCCEEDED
+    Test Function: oracle_sql_select_query ........................ SUCCEEDED
+    Test Function: close_db_connection ............................ SUCCEEDED
