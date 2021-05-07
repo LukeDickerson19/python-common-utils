@@ -19,6 +19,7 @@
 #### TO DO
 ```
 	create function to run update queries, and test it
+		function created, it just needs to be tested and documented
 
 ```
 

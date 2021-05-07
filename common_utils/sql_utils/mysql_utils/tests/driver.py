@@ -39,7 +39,7 @@ def test_mysql_select_query(
 			num_indents=num_indents, new_line_start=new_line_start)
 
 	# test pandas dataframe return type
-	response, successful1 = \
+	response1 = \
 		mysql_db.mysql_select_query(
 			TEST_SELECT_QUERY,
 			return_type='pandas dataframe',
@@ -49,7 +49,7 @@ def test_mysql_select_query(
 			new_line_start=False)
 
 	# test list of dictionaries return type
-	response, successful2 = \
+	response2 = \
 		mysql_db.mysql_select_query(
 			TEST_SELECT_QUERY,
 			return_type='list of dictionaries',
@@ -58,7 +58,7 @@ def test_mysql_select_query(
 			num_indents=num_indents+1,
 			new_line_start=False)
 
-	test_result = 'SUCCEEDED' if successful1 and successful2 else 'FAILED'
+	test_result = 'SUCCEEDED' if response1 != None and response2 != None else 'FAILED'
 	mysql_db.log.print('Test Function: test_get_all_messages_in_inbox ................. %s' % test_result,
 		num_indents=num_indents, new_line_start=False)
 

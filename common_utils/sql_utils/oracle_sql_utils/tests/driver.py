@@ -39,7 +39,7 @@ def test_oracle_sql_select_query(
 			num_indents=num_indents, new_line_start=new_line_start)
 
 	# test pandas dataframe return type
-	response, successful1 = \
+	response1 = \
 		oracle_sql_db.oracle_sql_select_query(
 			TEST_SELECT_QUERY,
 			return_type='pandas dataframe',
@@ -49,7 +49,7 @@ def test_oracle_sql_select_query(
 			new_line_start=False)
 
 	# test list of dictionaries return type
-	response, successful2 = \
+	response2 = \
 		oracle_sql_db.oracle_sql_select_query(
 			TEST_SELECT_QUERY,
 			return_type='list of dictionaries',
@@ -58,7 +58,7 @@ def test_oracle_sql_select_query(
 			num_indents=num_indents+1,
 			new_line_start=False)
 
-	test_result = 'SUCCEEDED' if successful1 and successful2 else 'FAILED'
+	test_result = 'SUCCEEDED' if response1 != None and response2 != None else 'FAILED'
 	oracle_sql_db.log.print('Test Function: oracle_sql_select_query ........................ %s' % test_result,
 		num_indents=num_indents, new_line_start=False)
 
