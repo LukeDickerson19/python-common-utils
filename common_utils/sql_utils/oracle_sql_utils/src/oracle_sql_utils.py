@@ -128,6 +128,7 @@ class Oracle_SQL_Database:
                 num_indents=num_indents, new_line_start=new_line_start)
             self.log.print('Query:', num_indents=num_indents+1)
             self.log.print('%s' % select_query, num_indents=num_indents+2)
+            start_time = datetime.now()
         try:
             cursor = self.oracle_sql_db.cursor()
             cursor.execute(select_query)
@@ -139,7 +140,10 @@ class Oracle_SQL_Database:
                     self.log.print('Results:', num_indents=num_indents+1)
                     response_str = '[\n\t' + ',\n\t'.join(map(lambda x : str(x), response)) + '\n]'
                     self.log.print(response_str, num_indents=num_indents+2)
-                self.log.print('Successfully queried Oracle SQL DB.', num_indents=num_indents)
+                end_time = datetime.now()
+                duration = int((end_time - start_time).total_seconds())
+                self.log.print('Successfully queried Oracle SQL DB. Duration: %s minutes and %s seconds' % (
+                    duration // 60, duration % 60), num_indents=num_indents)
         except Exception as e:
             self.log.print('Exception:', num_indents=num_indents+1)
             self.log.print('%s' % e, num_indents=num_indents+2)
@@ -159,6 +163,7 @@ class Oracle_SQL_Database:
                 num_indents=num_indents, new_line_start=new_line_start)
             self.log.print('Query:', num_indents=num_indents+1)
             self.log.print('%s' % select_query, num_indents=num_indents+2)
+            start_time = datetime.now()
         try:
             response = pd.read_sql(select_query, con=self.oracle_sql_db)
             if verbose:
@@ -166,7 +171,10 @@ class Oracle_SQL_Database:
                     self.log.print('Results:', num_indents=num_indents+1)
                     response_str = response.to_string(max_rows=MAX_ROWS)
                     self.log.print(response_str, num_indents=num_indents+2)
-                self.log.print('Successfully queried Oracle SQL DB.', num_indents=num_indents)
+                end_time = datetime.now()
+                duration = int((end_time - start_time).total_seconds())
+                self.log.print('Successfully queried Oracle SQL DB. Duration: %s minutes and %s seconds' % (
+                    duration // 60, duration % 60), num_indents=num_indents)
         except Exception as e:
             response = None
             self.log.print('Exception:', num_indents=num_indents+1)
@@ -189,12 +197,16 @@ class Oracle_SQL_Database:
                 num_indents=num_indents, new_line_start=new_line_start)
             self.log.print('Query:', num_indents=num_indents+1)
             self.log.print('%s' % update_query, num_indents=num_indents+2)
+            start_time = datetime.now()
         try:
             cursor = self.oracle_sql_db.cursor()
             cursor.execute(update_query)
             self.oracle_sql_db.commit()
             if verbose:
-                self.log.print('Successfully updated Oracle SQL DB.', num_indents=num_indents)
+                end_time = datetime.now()
+                duration = int((end_time - start_time).total_seconds())
+                self.log.print('Successfully updated Oracle SQL DB. Duration: %s minutes and %s seconds' % (
+                    duration // 60, duration % 60), num_indents=num_indents)
         except Exception as e:
             self.log.print('Exception:', num_indents=num_indents+1)
             self.log.print('%s' % e, num_indents=num_indents+2)

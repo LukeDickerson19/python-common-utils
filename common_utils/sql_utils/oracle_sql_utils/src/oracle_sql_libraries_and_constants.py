@@ -15,6 +15,7 @@ pd.set_option('display.max_columns', 20)
 pd.set_option('display.max_colwidth', 200)
 pd.set_option('display.width', 1000)
 import cx_Oracle # CMS oracle database connector
+from datetime import datetime
 
 # import common utils
 COMMON_UTILS_REPO_PATH = str(pathlib.Path(__file__).resolve().parent.parent.parent.parent.parent)
