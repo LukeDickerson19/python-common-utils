@@ -19,7 +19,8 @@ class Outlook:
 
 		self.log = log
 		if verbose:
-			self.log.print('Initializing Outlook Email', num_indents=num_indents)
+			self.log.print('Initializing Outlook Email',
+				num_indents=num_indents, new_line_start=new_line_start)
 		if connect_to_outlook:
 			try:
 				self.connect_to_outlook(verbose=verbose, num_indents=num_indents+1)
@@ -41,7 +42,8 @@ class Outlook:
 		self.outlook = win32.Dispatch('Outlook.Application')
 		self.mapi = self.outlook.GetNamespace('MAPI')
 		if verbose:
-			self.log.print('Connected to Outlook successfully.')
+			self.log.print('Connected to Outlook successfully.',
+				num_indents=num_indents, new_line_start=new_line_start)
 
 	def get_all_messages_in_inbox(
 		self,
@@ -138,7 +140,8 @@ class Outlook:
 			pywin32_dt.hour,
 			pywin32_dt.minute,
 			pywin32_dt.second,
-			tzinfo=timezone(tz_utc_offset))
+			tzinfo=tz.tzlocal())
+			# tzinfo=timezone(tz_utc_offset))
 
 		# print('BEFORE', reg_dt.strftime('%Y-%m-%d %I:%M:%S %p %Z %z'))
 
@@ -155,10 +158,10 @@ class Outlook:
 
 		return reg_dt
 
-	def find_message_in_inbox(
+	def find_messages_in_inbox(
 		self,
 		subject=None,
-		received_dt=None,
+		received_daterange_dts=None,
 		sender_address=None,
 		download_attachments=False,
 		attachments_download_location='',
@@ -166,35 +169,33 @@ class Outlook:
 		num_indents=0,
 		new_line_start=False):
 
-		return self.find_message_in_folder(
+		return self.find_messages_in_folder(
 			6,
 			subject=subject,
-			received_dt=received_dt,
+			received_daterange_dts=received_daterange_dts,
 			sender_address=sender_address,
 			download_attachments=download_attachments,
 			attachments_download_location=attachments_download_location,
 			verbose=verbose, num_indents=num_indents, new_line_start=new_line_start)
 
-	''' find_message_in_folder
+	''' find_messages_in_folder
 
 		Description:
 
 		Arguments:
 
 		Returns:
-			None if found 0 messages
-			tuple (msg, msg_dct) if found 1 message
 			list of tuples (msg, msg_dct) if found multiple messages
 
 		Sources:
 			https://www.codeforests.com/2020/06/04/python-to-read-email-from-outlook/
 
 		'''
-	def find_message_in_folder(
+	def find_messages_in_folder(
 		self,
 		folder_number,
 		subject=None,
-		received_dt=None,
+		received_daterange_dts=None,
 		sender_address=None,
 		download_attachments=False,
 		attachments_download_location='',
@@ -204,20 +205,22 @@ class Outlook:
 		
 		# log output and verify program passes in valid arguments
 		if verbose:
-			self.log.print('Searching for message with:',
+			self.log.print('Searching for messages with:',
 				num_indents=num_indents, new_line_start=new_line_start)
-		if received_dt == None and subject == None and sender_address == None:
+		if received_daterange_dts == None and subject == None and sender_address == None:
 			self.log.print('Invalid arguments. Must have at least one of the following arguments.',
 				num_indents=num_indents+1)
-			self.log.print('received_dt\nsubject\nsender_address',
+			self.log.print('received_daterange_dts\nsubject\nsender_address',
 				num_indents=num_indents+2)
 			return None
 		if verbose:
 			if subject != None:
 				self.log.print('Subject: \'%s\'' % subject,
 					num_indents=num_indents+1)
-			if received_dt != None:
-				self.log.print('Received Time (+/- 10 minutes): %s' % received_dt.strftime('%m/%d/%Y %H:%M %p'),
+			if received_daterange_dts != None:
+				self.log.print('Received DateRange End DateTime:   %s' % received_daterange_dts[1].strftime('%m/%d/%Y %I:%M %p %Z'),
+					num_indents=num_indents+1)
+				self.log.print('Received DateRange Start DateTime: %s' % received_daterange_dts[0].strftime('%m/%d/%Y %I:%M %p %Z'),
 					num_indents=num_indents+1)
 			if sender_address != None:
 				self.log.print('Sender:						 %s' % sender_address,
@@ -231,20 +234,21 @@ class Outlook:
 				num_indents=num_indents+1, new_line_start=True)
 
 		# filter in the received time
-		if received_dt != None:
-			received_dt_start = (received_dt - timedelta(minutes=10)).strftime('%m/%d/%Y %H:%M %p')
-			received_dt_end   = (received_dt + timedelta(minutes=10)).strftime('%m/%d/%Y %H:%M %p')
-			messages = messages.Restrict("[ReceivedTime] >= '" + received_dt_start + "'")
-			messages = messages.Restrict("[ReceivedTime] <= '" + received_dt_end   + "'")
+		if received_daterange_dts != None:
+			received_dt_start_str = received_daterange_dts[0].strftime('%m/%d/%Y %H:%M %p')
+			received_dt_end_str   = received_daterange_dts[1].strftime('%m/%d/%Y %H:%M %p')
+			messages = messages.Restrict("[ReceivedTime] >= '" + received_dt_start_str + "'")
+			messages = messages.Restrict("[ReceivedTime] <= '" + received_dt_end_str   + "'")
 			if verbose:
 				self.log.print('%d message(s) in time range:' % messages.Count,
 					num_indents=num_indents+1, new_line_start=True)
-				self.log.print('Start: %s' % received_dt_start, num_indents=num_indents+2)
-				self.log.print('End:   %s' % received_dt_end,   num_indents=num_indents+2)
+				self.log.print('Start: %s' % received_dt_start_str, num_indents=num_indents+2)
+				self.log.print('End:   %s' % received_dt_end_str,   num_indents=num_indents+2)
 
 		# filter for the subject
 		if subject != None:
-			messages = messages.Restrict('[Subject] = \'%s\'' % subject)
+			messages = messages.Restrict('[Subject] = "%s"' % subject)
+			# messages = messages.Restrict('[Subject] = \'%s\'' % subject)
 			if verbose:
 				self.log.print('%d message(s) with subject:' % messages.Count,
 					num_indents=num_indents+1, new_line_start=True)
@@ -266,25 +270,11 @@ class Outlook:
 					num_indents=num_indents+1, new_line_start=True)
 				self.log.print('Sender: \'%s\'' % sender_address, num_indents=num_indents+2)
 
-		# return the 1 message, and its dictionary
-		# or the remaining multiple messages and their dictionaries
-		msgs_and_msg_dcts = [(msg, self.get_message(msg,
+		# return a list of tuples of the message and its dictionary
+		return [(msg, self.get_message(msg,
 			download_attachments=download_attachments,
 			attachments_download_location=attachments_download_location)) \
 				for msg in messages]
-		if messages.Count == 1:
-			if verbose:
-				self.log.print('1 message found:',
-					num_indents=num_indents+1, new_line_start=True)
-				self.print_message(msgs_and_msg_dcts[0][1], num_indents=num_indents+2, new_line_start=True)
-				self.log.print('Message Found!',
-					num_indents=num_indents, new_line_start=True, draw_line=True)
-			return msgs_and_msg_dcts[0]
-		else:
-			if verbose:
-				self.log.print('Found %d messages with the specified filters.' % messages.Count,
-					num_indents=num_indents, new_line_start=True, draw_line=True)
-			return msgs_and_msg_dcts if messages.Count != 0 else None
 
 	''' get_message
 		
@@ -384,7 +374,7 @@ class Outlook:
 						num_indents=num_indents+1, new_line_start=True)
 					self.log.print(m['Received Datetime'].strftime('%Y-%m-%d %I:%M:%S %p %Z %z UTC offset'),
 						num_indents=num_indents+2)		
-			except ValueError:
+			except:
 				# use try catch
 				# https://stackoverflow.com/questions/62169709/python-valueerror-microsecond-must-be-in-0-999999-while-using-win32com
 				m['Received Datetime'] = None
@@ -397,7 +387,7 @@ class Outlook:
 						num_indents=num_indents+1, new_line_start=True)
 					self.log.print(m['Created Datetime'].strftime('%Y-%m-%d %I:%M:%S %p %Z %z UTC offset'),
 						num_indents=num_indents+2)
-			except ValueError:
+			except:
 				# use try catch
 				# https://stackoverflow.com/questions/62169709/python-valueerror-microsecond-must-be-in-0-999999-while-using-win32com
 				m['Created Datetime'] = None
@@ -538,10 +528,7 @@ class Outlook:
 		Description:
 
 		Arguments:
-			to ... list of strings ... list of email addresses to send the email to
-			cc ... list of strings ... list of email addresses to CC on the email
-			bcc ... list of strings ... list of email addresses to BCC on the email
-			attachments ... list of strings ... list of filepaths to files to attach to email
+			msg ... outlook message object ... message to send
 
 		Returns:
 			nothing
@@ -599,6 +586,8 @@ class Outlook:
 
 		Arguments:
 			to ... list of strings ... list of email addresses to send the email to
+			subject ... string ... email subject
+			body ... string ... email body
 			cc ... list of strings ... list of email addresses to CC on the email
 			bcc ... list of strings ... list of email addresses to BCC on the email
 			attachments ... list of strings ... list of filepaths to files to attach to email

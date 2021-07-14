@@ -71,14 +71,14 @@ def test_send_message(
 		num_indents=0,
 		new_line_start=True)
 
-def test_find_message_in_inbox(
+def test_find_messages_in_inbox(
 	outlook,
 	verbose=False,
 	num_indents=0,
 	new_line_start=False):
 
 	if verbose:
-		outlook.log.print('test_find_message_in_inbox', num_indents=num_indents, new_line_start=new_line_start)
+		outlook.log.print('test_find_messages_in_inbox', num_indents=num_indents, new_line_start=new_line_start)
 
 	# remove attachment files from previous test
 	filepaths = [f for f in os.listdir(
@@ -91,10 +91,11 @@ def test_find_message_in_inbox(
 	time.sleep(10)
 
 	# test find message in inbox
-	received_dt = datetime.now()
-	message = outlook.find_message_in_inbox(
+	received_start_dt = datetime.now() - timedelta(minutes=10)
+	received_end_dt   = datetime.now() + timedelta(minutes=10)
+	messages = outlook.find_messages_in_inbox(
 		subject=TEST_EMAIL_SUBJECT,
-		received_dt=received_dt,
+		received_daterange_dts=(received_start_dt, received_end_df),
 		download_attachments=True,
 		attachments_download_location=os.path.join(DATA_PATH, 'downloaded_attachments'),
 		verbose=verbose,
@@ -108,8 +109,8 @@ def test_find_message_in_inbox(
 	# are printed here because the function for this test find_message_in_inbox
 	# is used to verify if the message was sent successfully
 	test_result = 'SUCCEEDED' if \
-		isinstance(message, tuple) and \
-		message[1]['Subject'] == TEST_EMAIL_SUBJECT \
+		isinstance(messages, tuple) and \
+		messages[1]['Subject'] == TEST_EMAIL_SUBJECT \
 		else 'FAILED'
 	outlook.log.print('Test Function: test_send_message ............................. %s' % test_result,
 		num_indents=num_indents, new_line_start=new_line_start)
@@ -136,7 +137,7 @@ if __name__ == '__main__':
 	test_send_message(
 		outlook, verbose=TEST_VERBOSE, num_indents=1, new_line_start=False)
 
-	test_find_message_in_inbox(
+	test_find_messages_in_inbox(
 		outlook, verbose=TEST_VERBOSE, num_indents=1, new_line_start=False)
 
 

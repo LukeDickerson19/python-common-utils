@@ -25,7 +25,7 @@ useful functions to create
 			function will have optional arguments of which email
 			message object to respond to and the send functions will then ... tbd
 
-	it would also be cool if i figured out how to get all message in a specific inbox sub folder
+	it would also be cool if i figured out how to get all messages in a specific inbox sub folder
 		i think i'd just need to specify the subfolder in the get_all_messages_in_folder
 		https://www.mathworks.com/matlabcentral/answers/44967-retrieve-a-specific-folder-in-outlook
 
