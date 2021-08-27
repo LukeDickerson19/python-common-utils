@@ -9,7 +9,7 @@ import pathlib
 # import non-standard libraries
 import numpy as np
 import pandas as pd
-MAX_ROWS = 10
+MAX_ROWS = 1000
 pd.set_option('display.max_rows', MAX_ROWS)
 pd.set_option('display.max_columns', 20)
 pd.set_option('display.max_colwidth', 200)
