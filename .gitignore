@@ -1,12 +1,12 @@
 
 
 
-/common_utils/logging_utils/src/__pycache__/
-/common_utils/logging_utils/tests/__pycache__/
-/common_utils/email_utils/outlook_utils/src/__pycache__/
-/common_utils/email_utils/outlook_utils/tests/__pycache__/
-/common_utils/sql_utils/mysql_utils/src/__pycache__/
-/common_utils/sql_utils/mysql_utils/tests/__pycache__/
-/common_utils/sql_utils/oracle_sql_utils/src/__pycache__/
-/common_utils/sql_utils/oracle_sql_utils/tests/__pycache__/
+/utils/logging/src/__pycache__/
+/utils/logging/tests/__pycache__/
+/utils/email/outlook/src/__pycache__/
+/utils/email/outlook/tests/__pycache__/
+/utils/sql/mysql/src/__pycache__/
+/utils/sql/mysql/tests/__pycache__/
+/utils/sql/oracle_sql/src/__pycache__/
+/utils/sql/oracle_sql/tests/__pycache__/
 
