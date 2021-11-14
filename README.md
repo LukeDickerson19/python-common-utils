@@ -12,17 +12,19 @@ Utility functions for common backend processes:
 	emails_utils
 	general_utils
 
-Visit each util subfolder in the common_utils folder for
+Visit each util subfolder in the utils folder for
 usage and details on the functions each util provides.
+An example of how to use each util is in each util's test folder
+
 ```
 
 #### TO DO
 ```
-restructure each *_util.py file in the src folder to be like the util folders in the common_utils folder
+restructure each *_util.py file in the src folder to be like the util folders in the utils folder
 
 	what i've fixed up so far is
-		common_utils/logging_utils
-		common_utils/email_utils/outlook_utils
+		utils/logging_utils
+		utils/email_utils/outlook_utils
 
 	for each one you need to see what constants it uses in src/constants.py
 		and replicate the exact structure of the:
