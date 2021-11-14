@@ -20,30 +20,20 @@ An example of how to use each util is in each util's test folder
 
 #### TO DO
 ```
-restructure each *_util.py file in the src folder to be like the util folders in the utils folder
-
-	what i've fixed up so far is
-		utils/logging_utils
-		utils/email_utils/outlook_utils
-
-	for each one you need to see what constants it uses in src/constants.py
-		and replicate the exact structure of the:
-			<util_folders>/<util>/src/libraries_and_constants.py
-
-		maybe put it all in a cicd (or deploy) folder
-			\deploy\
-				parse_NOTES_to_README.py
 
 fix up general utils
 	required for aws_utils to work
 
 fix up aws utils
 
+fix up snowflake utils
+
 clean up the notes above each function
 	or maybe make a docs page in markdown
 
-make common_components a python lib
-	see this link too
+make this a python lib
+	how to create a python library
 	https://medium.com/analytics-vidhya/how-to-create-a-python-library-7d5aea80cc3f
 https://medium.com/@joel.barmettler/how-to-upload-your-python-package-to-pypi-65edc5fe9c56
+
 ```
