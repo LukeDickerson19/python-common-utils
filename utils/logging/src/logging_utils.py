@@ -41,6 +41,9 @@ class Log:
         self.blanked_out_previous_string = []
         self.same_line_string = False
 
+        # variables used for print_prev_line
+        self.prev_string = ''
+
     ''' print()
 
         Description:
@@ -92,6 +95,7 @@ class Log:
                 console_str,
                 end=end,
                 file=sys.stdout)
+            self.prev_string = console_str # used from print_prev_line(), disregard
         if self.output_to_logfile:
             logfile = open(self.path, 'a')
             logfile_str = \
@@ -154,7 +158,6 @@ class Log:
                 It only seems to work on linux. On windows it prints
                 to the next line instead of the same line
 
-
         Arguments:
             string ........... string .... what will be printed
             num_indents ...... int ....... number of indents to put in front of the string
@@ -181,7 +184,7 @@ class Log:
         # clear previous text by overwriting non-spaces with spaces
         if self.same_line_string:
             last_line_index = len(self.blanked_out_previous_string) - 1
-            for i, line in enumerate(self.blanked_out_previous_string):
+            for line in self.blanked_out_previous_string:
                 print(line, end='')
 
         # print the string
@@ -201,6 +204,46 @@ class Log:
 
         return console_str, logfile_str
 
+    ''' print_prev_line()
+
+        Description:
+
+            Print <string> from the end of the last line of the previous string printed
+
+        Arguments:
+            string ........... string .... what will be printed
+            num_indents ...... int ....... number of indents to put in front of the string
+            new_line_start ... boolean ... print a new line in before the string
+            new_line_end ..... boolean ... print a new line in after the string
+            draw_line ........ boolean ... draw a line on the blank line before or after the string
+            end .............. string .... last character(s) to print at the end of the string
+
+        Returns:
+            tuple:
+                console_str ... string ... string that was output to the console
+                logfile_str ... string ... string that was output to the logfile
+
+        '''
+    def print_prev_line(
+        self,
+        string,
+        num_indents=0,
+        new_line_start=False,
+        new_line_end=False,
+        draw_line=False,
+        end='\n'):
+
+        # move the cursor to the end of the last line if it exists
+        # then print the <string>
+        if self.prev_string != '':
+            string = '\x1b[A' * len(self.prev_string.split('\n')) + self.prev_string + string
+        return self.print(
+            string,
+            num_indents=num_indents,
+            new_line_start=new_line_start,
+            new_line_end=new_line_end,
+            draw_line=draw_line,
+            end=end)
 
     ''' get_indented_string()
 
