@@ -204,7 +204,7 @@ class Log:
 
         return console_str, logfile_str
 
-    ''' print_prev_line()
+    ''' continue_prev_line()
 
         Description:
 
@@ -224,7 +224,7 @@ class Log:
                 logfile_str ... string ... string that was output to the logfile
 
         '''
-    def print_prev_line(
+    def continue_prev_line(
         self,
         string,
         num_indents=0,
@@ -233,10 +233,12 @@ class Log:
         draw_line=False,
         end='\n'):
 
-        # move the cursor to the end of the last line if it exists
+        # move the cursor to the end of the last line
         # then print the <string>
+        # source: https://newbedev.com/python-how-can-i-move-with-cursor-in-input-python-code-example
         if self.prev_string != '':
-            string = '\x1b[A' * len(self.prev_string.split('\n')) + self.prev_string + string
+            string = '\x1b[1A\x1b[%dC%s' % (
+                len(self.prev_string.split('\n')[-1]), string)
         return self.print(
             string,
             num_indents=num_indents,
