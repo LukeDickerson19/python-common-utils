@@ -33,6 +33,10 @@ class Log:
         self.output_to_logfile = output_to_logfile
         self.indent = indent
 
+        # create logfile if it doesn't exist
+        # https://appdividend.com/2021/06/03/how-to-create-file-if-not-exists-in-python/
+        open(self.path, 'a+').close()
+
         # clear log
         if clear_old_log:
             open(self.path, 'w').close()
