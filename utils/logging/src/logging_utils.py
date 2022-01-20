@@ -124,6 +124,7 @@ class Log:
 
         Arguments:
             dct0 ............. dict ...... dictionary to print
+            truncate_str ..... int ....... max number of characters a string can have
             indent ........... string .... what an indent looks like
             num_indents ...... int ....... number of indents to put in front of the string
             new_line_start ... boolean ... print a new line in before the string
@@ -140,6 +141,7 @@ class Log:
     def print_dct(
         self,
         dct0,
+        truncate_str=None,
         num_indents=0,
         new_line_start=False,
         new_line_end=False,
@@ -156,6 +158,10 @@ class Log:
                     v2 = 'pd.Series, length=%d' % (v.size)
                 elif isinstance(v, dict):
                     v2 = convert_pandas_to_string(v)
+                elif isinstance(v, str) and \
+                    truncate_str != None and \
+                    len(v) > truncate_str:
+                    v2 = v[:truncate_str] + '...'
                 else:
                     v2 = v
                 d2[k] = v2
