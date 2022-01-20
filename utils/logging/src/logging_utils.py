@@ -145,9 +145,25 @@ class Log:
         new_line_end=False,
         draw_line=False,
         end='\n'):
-        
+
+        def convert_pandas_to_string(d):
+            d2 = {}
+            for k, v in d.items():
+                if isinstance(v, pd.DataFrame):
+                    v2 = 'pd.DataFrame, shape=(%d, %d), columns=%s' % (
+                        v.shape[0], v.shape[1], v.columns.values)
+                elif isinstance(v, pd.Series):
+                    v2 = 'pd.Series, length=%d' % (v.size)
+                elif isinstance(v, dict):
+                    v2 = convert_pandas_to_string(v)
+                else:
+                    v2 = v
+                d2[k] = v2
+            return d2
+        dct1 = convert_pandas_to_string(dct0)
+
         return self.print(
-            json.dumps(dct0, indent=4),
+            json.dumps(dct1, indent=4),
             num_indents=num_indents,
             new_line_start=new_line_start,
             new_line_end=new_line_end,
