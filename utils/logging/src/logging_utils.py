@@ -124,6 +124,7 @@ class Log:
 
         Arguments:
             dct0 ............. dict ...... dictionary to print
+            sort_keys ........ boolean ... whether or not to sort the dict by keys when printed
             truncate_str ..... int ....... max number of characters a string can have
             indent ........... string .... what an indent looks like
             num_indents ...... int ....... number of indents to put in front of the string
@@ -141,6 +142,7 @@ class Log:
     def print_dct(
         self,
         dct0,
+        sort_keys=False,
         truncate_str=None,
         num_indents=0,
         new_line_start=False,
@@ -169,7 +171,10 @@ class Log:
         dct1 = convert_pandas_to_string(dct0)
 
         return self.print(
-            json.dumps(dct1, indent=4),
+            json.dumps(
+                dct1,
+                indent=4,
+                sort_keys=sort_keys),
             num_indents=num_indents,
             new_line_start=new_line_start,
             new_line_end=new_line_end,
@@ -209,7 +214,7 @@ class Log:
 
         # clear previous text by overwriting non-spaces with spaces
         if self.same_line_string:
-            last_line_index = len(self.blanked_out_previous_string) - 1
+            # last_line_index = len(self.blanked_out_previous_string) - 1 # this variable isn't used anywhere
             for line in self.blanked_out_previous_string:
                 print(line, end='')
 
