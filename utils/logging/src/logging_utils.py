@@ -101,7 +101,6 @@ class Log:
                 file=sys.stdout)
             self.prev_string = console_str # used from print_prev_line(), disregard
         if self.output_to_logfile:
-            logfile = open(self.path, 'a')
             logfile_str = \
                 self.get_indented_string(
                     string,
@@ -110,6 +109,7 @@ class Log:
                     new_line_start=new_line_start,
                     new_line_end=new_line_end,
                     draw_line=draw_line)
+            logfile = open(self.path, 'a')
             print(
                 logfile_str,
                 end=end,
@@ -234,49 +234,6 @@ class Log:
                 for line in console_str.split('\n')]
 
         return console_str, logfile_str
-
-    ''' continue_prev_line()
-
-        Description:
-
-            Print <string> from the end of the last line of the previous string printed
-
-        Arguments:
-            string ........... string .... what will be printed
-            num_indents ...... int ....... number of indents to put in front of the string
-            new_line_start ... boolean ... print a new line in before the string
-            new_line_end ..... boolean ... print a new line in after the string
-            draw_line ........ boolean ... draw a line on the blank line before or after the string
-            end .............. string .... last character(s) to print at the end of the string
-
-        Returns:
-            tuple:
-                console_str ... string ... string that was output to the console
-                logfile_str ... string ... string that was output to the logfile
-
-        '''
-    def continue_prev_line(
-        self,
-        string,
-        num_indents=0,
-        new_line_start=False,
-        new_line_end=False,
-        draw_line=False,
-        end='\n'):
-
-        # move the cursor to the end of the last line
-        # then print the <string>
-        # source: https://newbedev.com/python-how-can-i-move-with-cursor-in-input-python-code-example
-        if self.prev_string != '':
-            string = '\x1b[1A\x1b[%dC%s' % (
-                len(self.prev_string.split('\n')[-1]), string)
-        return self.print(
-            string,
-            num_indents=num_indents,
-            new_line_start=new_line_start,
-            new_line_end=new_line_end,
-            draw_line=draw_line,
-            end=end)
 
     ''' get_indented_string()
 
