@@ -40,3 +40,16 @@ class Properties:
         except Exception as e:
             value = None
         return value
+
+    def set(self, section, key, value):
+
+        # TODO: see if the .set() fn does this automatically
+        if section not in self.config.sections():
+            self.config.add_section(section)
+
+        config.set(section, key, value)
+
+        # sources
+        # https://stackoverflow.com/questions/49062073/how-to-add-section-and-values-to-ini-using-configparser-in-python
+        # https://stackoverflow.com/questions/22068050/iterate-over-sections-in-a-config-file
+
