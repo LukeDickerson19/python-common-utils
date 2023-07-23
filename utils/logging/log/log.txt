@@ -1,27 +1,3 @@
-a
-    b
-        c
-            d
-                e
-                    indented
-                    multi
-                    line
-                    string
-    
-    new_line_start=True, draw_line=False
-        
-    new_line_start=True, draw_line=True
-    new_line_start=False
-    new_line_end=True, draw_line=False
-    
-    new_line_end=True, draw_line=True
-        
-    new_line_end=False
-            {
-                "a": 1,
-                "b": 2,
-                "c": 3
-            }
             aaaa
             bbb
             cc

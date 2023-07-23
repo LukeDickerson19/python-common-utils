@@ -57,10 +57,10 @@ class Log:
 
         Arguments:
             string ........... string .... what will be printed
-            num_indents ...... int ....... number of indents to put in front of the string
-            new_line_start ... boolean ... print a new line in before the string
-            new_line_end ..... boolean ... print a new line in after the string
-            draw_line ........ boolean ... draw a line on the blank line before or after the string
+            i ................ int ....... number of indents to put in front of the string
+            ns ............... boolean ... print a new line in before the string
+            ne ............... boolean ... print a new line in after the string
+            d ................ boolean ... draw a line on the blank line before or after the string
             end .............. string .... last character(s) to print at the end of the string
 
         Returns:
@@ -72,10 +72,10 @@ class Log:
     def print(
         self,
         string='',
-        num_indents=0,
-        new_line_start=False,
-        new_line_end=False,
-        draw_line=False,
+        i=0, # i = number of indents
+        ns=False, # ns = newline start
+        ne=False, # ne = newline end
+        d=False, # d = draw line
         end='\n'):
 
         self.same_line_string = False # used for print_same_line(), disregard
@@ -92,10 +92,10 @@ class Log:
                 self.get_indented_string(
                     string,
                     self.indent,
-                    num_indents=num_indents,
-                    new_line_start=new_line_start,
-                    new_line_end=new_line_end,
-                    draw_line=draw_line)
+                    i=i,
+                    ns=ns,
+                    ne=ne,
+                    d=d)
             print(
                 console_str,
                 end=end,
@@ -106,10 +106,10 @@ class Log:
                 self.get_indented_string(
                     string,
                     len(self.indent)*' ',
-                    num_indents=num_indents,
-                    new_line_start=new_line_start,
-                    new_line_end=new_line_end,
-                    draw_line=draw_line)
+                    i=i,
+                    ns=ns,
+                    ne=ne,
+                    d=d)
             logfile = open(self.path, 'a')
             print(
                 logfile_str,
@@ -127,11 +127,10 @@ class Log:
             dct0 ............. dict ...... dictionary to print
             sort_keys ........ boolean ... whether or not to sort the dict by keys when printed
             truncate_str ..... int ....... max number of characters a string can have
-            indent ........... string .... what an indent looks like
-            num_indents ...... int ....... number of indents to put in front of the string
-            new_line_start ... boolean ... print a new line in before the string
-            new_line_end ..... boolean ... print a new line in after the string
-            draw_line ........ boolean ... draw a line on the blank line before or after the string
+            i ................ int ....... number of indents to put in front of the string
+            ns ............... boolean ... print a new line in before the string
+            ne ............... boolean ... print a new line in after the string
+            d ................ boolean ... draw a line on the blank line before or after the string
             end .............. string .... last character(s) to print at the end of the string
 
         Returns:
@@ -145,10 +144,10 @@ class Log:
         dct0,
         sort_keys=False,
         truncate_str=None,
-        num_indents=0,
-        new_line_start=False,
-        new_line_end=False,
-        draw_line=False,
+        i=0, # i = number of indents
+        ns=False, # ns = newline start
+        ne=False, # ne = newline end
+        d=False, # d = draw line
         end='\n'):
 
         def convert_pandas_to_string(d):
@@ -176,10 +175,10 @@ class Log:
                 dct1,
                 indent=4,
                 sort_keys=sort_keys),
-            num_indents=num_indents,
-            new_line_start=new_line_start,
-            new_line_end=new_line_end,
-            draw_line=draw_line,
+            i=i,
+            ns=ns,
+            ne=ne,
+            d=d,
             end=end)
 
     ''' print_same_line()
@@ -192,10 +191,10 @@ class Log:
 
         Arguments:
             string ........... string .... what will be printed
-            num_indents ...... int ....... number of indents to put in front of the string
-            new_line_start ... boolean ... print a new line in before the string
-            new_line_end ..... boolean ... print a new line in after the string
-            draw_line ........ boolean ... draw a line on the blank line before or after the string
+            i ................ int ....... number of indents to put in front of the string
+            ns ............... boolean ... print a new line in before the string
+            ne ............... boolean ... print a new line in after the string
+            d ................ boolean ... draw a line on the blank line before or after the string
             end .............. string .... last character(s) to print at the end of the string
 
         Returns:
@@ -207,10 +206,10 @@ class Log:
     def print_same_line(
         self,
         string,
-        num_indents=0,
-        new_line_start=False,
-        new_line_end=False,
-        draw_line=False,
+        i=0, # i = number of indents
+        ns=False, # ns = newline start
+        ne=False, # ne = newline end
+        d=False, # d = draw line
         end='\n'):
 
         # clear previous text by overwriting non-spaces with spaces
@@ -222,10 +221,10 @@ class Log:
         # print the string
         console_str, logfile_str = self.print(
             string,
-            num_indents=num_indents,
-            new_line_start=new_line_start,
-            new_line_end=new_line_end,
-            draw_line=draw_line,
+            i=i,
+            ns=ns,
+            ne=ne,
+            d=d,
             end=end)
 
         # update blanked_out_previous_string
@@ -244,10 +243,10 @@ class Log:
         Arguments:
             string0 .......... string .... what will be printed
             indent0 .......... string .... what an indent looks like
-            num_indents ...... int ....... number of indents to put in front of the string
-            new_line_start ... boolean ... print a new line in before the string
-            new_line_end ..... boolean ... print a new line in after the string
-            draw_line ........ boolean ... draw a line on the blank line before or after the string
+            i ................ int ....... number of indents to put in front of the string
+            ns ............... boolean ... print a new line in before the string
+            ne ............... boolean ... print a new line in after the string
+            d ................ boolean ... draw a line on the blank line before or after the string
 
         Returns:
             string ... string ... string0 with indent0 and other optional arguments concatenated properly
@@ -257,20 +256,20 @@ class Log:
     def get_indented_string(
         string0,
         indent0,
-        num_indents=0,
-        new_line_start=False,
-        new_line_end=False,
-        draw_line=False):
+        i=0, # i = number of indents
+        ns=False, # ns = newline start
+        ne=False, # ne = newline end
+        d=False): # d = draw line
 
-        total_indent0 = ''.join([indent0] * num_indents)
-        total_indent1 = ''.join([indent0] * (num_indents + 1))
+        total_indent0 = ''.join([indent0] * i)
+        total_indent1 = ''.join([indent0] * (i + 1))
         string = ''
-        if new_line_start:
-            string += (total_indent1 if draw_line else total_indent0) + '\n'
+        if ns:
+            string += (total_indent1 if d else total_indent0) + '\n'
         for s in string0.split('\n'):
             string += total_indent0 + s + '\n'
-        if new_line_end:
-            string += (total_indent1 if draw_line else total_indent0) + '\n'
+        if ne:
+            string += (total_indent1 if d else total_indent0) + '\n'
         string = string[:-1] # remove final newline character
         return string
 
