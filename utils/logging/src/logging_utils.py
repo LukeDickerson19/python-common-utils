@@ -22,7 +22,7 @@ class Log:
         '''
     def __init__(
         self,
-        log_filepath,
+        log_filepath=None,
         output_to_console=True,
         output_to_logfile=True,
         indent='|   ',
@@ -33,13 +33,15 @@ class Log:
         self.output_to_logfile = output_to_logfile
         self.indent = indent
 
-        # create logfile if it doesn't exist
-        # https://appdividend.com/2021/06/03/how-to-create-file-if-not-exists-in-python/
-        open(self.path, 'a+').close()
+        if log_filepath != None:
 
-        # clear log
-        if clear_old_log:
-            open(self.path, 'w').close()
+            # create logfile if it doesn't exist
+            # https://appdividend.com/2021/06/03/how-to-create-file-if-not-exists-in-python/
+            open(self.path, 'a+').close()
+
+            # clear log
+            if clear_old_log:
+                open(self.path, 'w').close()
 
         # variables used for print_same_line()
         self.blanked_out_previous_string = []
