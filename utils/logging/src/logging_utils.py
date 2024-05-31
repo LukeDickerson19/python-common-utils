@@ -10,11 +10,14 @@ class Log:
             Initialize a log to print to the console and/or a log file.
 
         Arguments:
-            log_filepath ........ string .... complete path to the log file
-            output_to_console ... boolean ... flag to print to the console or not
-            output_to_logfile ... boolean ... flag to print to the log file or not
-            indent .............. string .... what an indent looks like in the log
-            clear_old_log ....... boolean ... flag to clear the log file or not
+            log_filepath ........... string .... complete path to the log file
+            output_to_console ...... boolean ... flag to print to the console or not
+            output_to_logfile ...... boolean ... flag to print to the log file or not
+            clear_old_log .......... boolean ... flag to clear the log file or not
+            indent ................. string .... what an indent looks like in the log
+            prepend_datetime_fmt ... string .... format specifying datetime to prepend to each line printed
+            timezone ............... string .... timezone to use if prepend_datetime_fmt is not an empty string
+            prepend_memory_usage ... boolean ... 
 
         Returns:
             Nothing
@@ -25,13 +28,21 @@ class Log:
         log_filepath=None,
         output_to_console=True,
         output_to_logfile=True,
+        clear_old_log=True,
         indent='|   ',
-        clear_old_log=True):
+        prepend_datetime_fmt='',
+        timezone='UTC',
+        prepend_memory_usage=False):
 
         self.path = log_filepath
         self.output_to_console = output_to_console
-        self.output_to_logfile = output_to_logfile
+        self.output_to_logfile = output_to_logfile if log_filepath != None else False
         self.indent = indent
+        self.prepend_datetime_fmt = prepend_datetime_fmt
+        self.timezone = timezone
+        self.prepend_memory_usage = prepend_memory_usage
+        if self.prepend_memory_usage:
+            tracemalloc.start()
 
         if log_filepath != None:
 
@@ -91,7 +102,7 @@ class Log:
         console_str, logfile_str = None, None
         if self.output_to_console:
             console_str = \
-                self.get_indented_string(
+                self.get_formatted_string(
                     string,
                     self.indent,
                     i=i,
@@ -105,7 +116,7 @@ class Log:
             self.prev_string = console_str # used from print_prev_line(), disregard
         if self.output_to_logfile:
             logfile_str = \
-                self.get_indented_string(
+                self.get_formatted_string(
                     string,
                     len(self.indent)*' ',
                     i=i,
@@ -237,10 +248,11 @@ class Log:
 
         return console_str, logfile_str
 
-    ''' get_indented_string()
+    ''' get_formatted_string()
 
         Description:
-            create a string with string0, indent0, and other optional arguments that is concatenated properly for printing
+            create a string with string0, indent0, and other optional arguments that is concatenated properly for printing.
+            it also prepends the datetime and the memory usage if the user requested it
 
         Arguments:
             string0 .......... string .... what will be printed
@@ -254,8 +266,8 @@ class Log:
             string ... string ... string0 with indent0 and other optional arguments concatenated properly
 
         '''
-    @staticmethod
-    def get_indented_string(
+    def get_formatted_string(
+        self,
         string0,
         indent0,
         i=0, # i = number of indents
@@ -269,9 +281,42 @@ class Log:
         if ns:
             string += (total_indent1 if d else total_indent0) + '\n'
         for s in string0.split('\n'):
+            if self.prepend_datetime_fmt != '':
+                now = datetime.now(ZoneInfo(self.timezone))
+                s = now.strftime(self.prepend_datetime_fmt) + ' ' + s
+            if self.prepend_memory_usage:
+                bytes_used, bytes_allocated = tracemalloc.get_traced_memory()
+                s = f'({Log.convert_bytes(bytes_used)} used {Log.convert_bytes(bytes_allocated)} allocated) ' + s
             string += total_indent0 + s + '\n'
         if ne:
             string += (total_indent1 if d else total_indent0) + '\n'
         string = string[:-1] # remove final newline character
         return string
+
+    ''' convert_bytes(b)
+
+        Description:
+            converts the int number of bytes to a string with appropriate units
+
+        Arguments:
+            b ... int ... number of bytes
+
+        Returns:
+            string with format "{num} {unit}"
+
+        '''
+    @staticmethod
+    def convert_bytes(b):
+        units = ['bytes', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']
+        index = 0
+        while b >= 1024 and index < len(units) - 1:
+            b /= 1024
+            index += 1
+        if index == 0:
+            if b == 1:
+                return f"{b} byte"
+            else:
+                return f"{b} bytes"
+        else:
+            return f"{b:.2f} {units[index]}"
 

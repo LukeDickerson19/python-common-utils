@@ -34,6 +34,16 @@ def test_print(log):
 		'new_line_end=False',
 		i=1, ne=False)
 
+	# test prepend date
+	log2 = logging_utils.Log(prepend_datetime_fmt='%y-%m-%d %H:%M:%S.%f %Z')
+	log2.print('testing single line prepend_datetime_fmt', ns=True)
+	log2.print('testing\nmulti\nline\nprepend_datetime_fmt')
+
+	# test prepend memory usage
+	log3 = logging_utils.Log(prepend_memory_usage=True)
+	log3.print('testing single line prepend_memory_usage', ns=True)
+	log3.print('testing\nmulti\nline\nprepend_memory_usage')
+
 	# test return value
 	print('\nconsole_str:')
 	print(console_str)
@@ -129,6 +139,6 @@ def test_print_same_line(log):
 if __name__ == '__main__':
 
 	log = logging_utils.Log(LOG_FILEPATH)
-	# test_print(log)
+	test_print(log)
 	# test_print_dct(log)
-	test_print_same_line(log)
+	# test_print_same_line(log)
