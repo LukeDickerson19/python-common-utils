@@ -38,11 +38,13 @@ def test_print(log):
 	log2 = logging_utils.Log(prepend_datetime_fmt='%y-%m-%d %H:%M:%S.%f %Z')
 	log2.print('testing single line prepend_datetime_fmt', ns=True)
 	log2.print('testing\nmulti\nline\nprepend_datetime_fmt')
+	log2.print('testing single line indented prepend_datetime_fmt', i=1)
 
 	# test prepend memory usage
 	log3 = logging_utils.Log(prepend_memory_usage=True)
 	log3.print('testing single line prepend_memory_usage', ns=True)
 	log3.print('testing\nmulti\nline\nprepend_memory_usage')
+	log2.print('testing single line indented prepend_memory_usage', i=1)
 
 	# test return value
 	print('\nconsole_str:')

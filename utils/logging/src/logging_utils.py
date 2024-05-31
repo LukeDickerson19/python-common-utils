@@ -281,13 +281,14 @@ class Log:
         if ns:
             string += (total_indent1 if d else total_indent0) + '\n'
         for s in string0.split('\n'):
-            if self.prepend_datetime_fmt != '':
-                now = datetime.now(ZoneInfo(self.timezone))
-                s = now.strftime(self.prepend_datetime_fmt) + ' ' + s
+            p = ''
             if self.prepend_memory_usage:
                 bytes_used, bytes_allocated = tracemalloc.get_traced_memory()
-                s = f'({Log.convert_bytes(bytes_used)} used {Log.convert_bytes(bytes_allocated)} allocated) ' + s
-            string += total_indent0 + s + '\n'
+                p += f'({Log.convert_bytes(bytes_used)} used {Log.convert_bytes(bytes_allocated)} allocated) '
+            if self.prepend_datetime_fmt != '':
+                now = datetime.now(ZoneInfo(self.timezone))
+                p += now.strftime(self.prepend_datetime_fmt) + ' '
+            string += p + total_indent0 + s + '\n'
         if ne:
             string += (total_indent1 if d else total_indent0) + '\n'
         string = string[:-1] # remove final newline character
