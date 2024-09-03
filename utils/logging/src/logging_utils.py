@@ -284,7 +284,7 @@ class Log:
             p = ''
             if self.prepend_memory_usage:
                 bytes_used, bytes_allocated = tracemalloc.get_traced_memory()
-                p += f'({Log.convert_bytes(bytes_used)} used {Log.convert_bytes(bytes_allocated)} allocated) '
+                p += f'({Log.convert_bytes(bytes_used)} used {Log.convert_bytes(bytes_allocated)} allocated)'.ljust(45, ' ') # pad w/ spaces
             if self.prepend_datetime_fmt != '':
                 now = datetime.now(ZoneInfo(self.timezone))
                 p += now.strftime(self.prepend_datetime_fmt) + ' '
@@ -319,5 +319,5 @@ class Log:
             else:
                 return f"{b} bytes"
         else:
-            return f"{b:.2f} {units[index]}"
+            return f"{b:.4f} {units[index]}"
 

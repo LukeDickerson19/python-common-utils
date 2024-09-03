@@ -4,7 +4,12 @@
 
 #### DESCRIPTION
 ```
-tool that makes it easy to organize log files and console output
+logging class with the following features:
+	set indendation of string being printed
+	print on the same line
+	print time of when string was printed
+	print memory usage of code when string was printed
+	print to console and to file individually or simultaniously
 ```
 
 #### USAGE
