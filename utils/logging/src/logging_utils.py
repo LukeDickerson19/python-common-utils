@@ -1,4 +1,25 @@
-from logging_libraries_and_constants import *
+
+# LIBRARIES
+
+# import standard libraries
+import os
+import sys
+import json
+from datetime import datetime
+from zoneinfo import ZoneInfo
+import tracemalloc # used to get memory usage of code using logging
+
+# import non-standard libraries
+import pandas as pd
+
+# import common utils
+# None
+
+
+
+# CONSTANTS
+# None
+
 
 
 
@@ -48,7 +69,8 @@ class Log:
 
             # create logfile if it doesn't exist
             # https://appdividend.com/2021/06/03/how-to-create-file-if-not-exists-in-python/
-            open(self.path, 'a+').close()
+            if not os.path.exists(self.path):
+                open(self.path, 'w').close()
 
             # clear log
             if clear_old_log:
