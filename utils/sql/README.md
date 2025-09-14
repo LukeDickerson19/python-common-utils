@@ -45,20 +45,21 @@
 <summary><h2>Sources</h2></summary>
 
     MySQL Connector/Python Docs
-    https://github.com/mysql/mysql-connector-python
+        https://github.com/mysql/mysql-connector-python
 
     Oracle Database Connection in Python
+        https://www.geeksforgeeks.org/oracle-database-connection-in-python/
+    
         cx_Oracle lib requires Oracle Client libraries
             download the Basic one
             https://www.oracle.com/database/technologies/instant-client.html
         and add it to your path:
             C:\oracle\instantclient_19_10
         https://cx-oracle.readthedocs.io/en/latest/user_guide/installation.html
-    https://www.geeksforgeeks.org/oracle-database-connection-in-python/
 
     PostgreSQL Connector
-    https://pypi.org/project/psycopg2/
-    https://www.psycopg.org/docs/
+        https://pypi.org/project/psycopg2/
+        https://www.psycopg.org/docs/
 
 </details>
 
