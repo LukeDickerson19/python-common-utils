@@ -48,7 +48,7 @@ sudo nano /var/lib/postgresql/17/main/pg_hba.conf
 This is the main content that can be collapsed.
 
 <details>
-<summary>Nested Subsection 1</summary>
+<summary>Nested Subsection 1: default closed</summary>
 
 Content for nested subsection 1.
 - Item 1
@@ -56,8 +56,8 @@ Content for nested subsection 1.
 
 </details>
 
-<details>
-<summary>Nested Subsection 2</summary>
+<details open>
+<summary>Nested Subsection 2: default open</summary>
 
 Content for nested subsection 2.
 ```python
