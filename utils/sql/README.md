@@ -65,7 +65,8 @@
 <details>
 <summary><h2>TODO:</h2></summary>
 
-    update mysql_utils.py and oracle_sql_utils.py to not be a class, and just use similar file content to postgreql_utils.py
+    update mysql_utils.py and oracle_sql_utils.py to not be a class,
+    and just use similar file content to postgreql_utils.py
 	
 </details>
 
