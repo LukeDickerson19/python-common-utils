@@ -4,6 +4,7 @@
 <details open>
 <summary><h2>Description</h2></summary>
 
+<div style="margin-left: 20px;">
 example usage of the following python SQL libraries:
  - mysql-connector-python
  - cx-Oracle
@@ -19,7 +20,7 @@ to run the test you must:
  - in the tests/libraries_and_constants.py file, enter the:
     - TEST_HOSTNAME, TEST_PORT, TEST_USERNAME, TEST_PASSWORD, TEST_DATABASE
     - tested with Python version 3.13.5 and library versions in requirements.txt
-
+</div>
 </details>
 
 <details>
