@@ -1,4 +1,4 @@
-# SQL Utilities
+# SQL Utils
 
 
 <details open>
