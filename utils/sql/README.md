@@ -22,7 +22,7 @@ to run the test you must:
 
 </details>
 
-<details open>
+<details>
 <summary> Linux Postgresql Setup </summary>
 ```
 
