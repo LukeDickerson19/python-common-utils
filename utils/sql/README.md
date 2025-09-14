@@ -4,7 +4,7 @@
 <details open>
 <summary><h2>Description</h2></summary>
 
-<div style="margin-left: 20px;">
+<div style="padding-left: 20px;">
 example usage of the following python SQL libraries:
  - mysql-connector-python
  - cx-Oracle
