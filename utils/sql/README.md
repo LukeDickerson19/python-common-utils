@@ -5,9 +5,9 @@
 <summary><h2>Description</h2></summary>
 
     example usage of the following python SQL libraries:
-        mysql-connector-python
-        cx-Oracle
-        psycopg2
+        mysql-connector-python (MySQL)
+        cx-Oracle (Oracle SQL)
+        psycopg2 (PostgreSQL)
 
     shows how to:
         connect/disconnect to a SQL database
