@@ -23,7 +23,7 @@
 </details>
 
 <details>
-<summary><h2>Linux Postgresql Setup</h2></summary>
+    <summary><h2>Linux Postgresql Setup</h2></summary>
     
     sudo pacman -S postgresql # install postgresql
     sudo systemctl start postgresql
