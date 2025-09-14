@@ -24,8 +24,7 @@ to run the test you must:
 
 <details>
 <summary> Linux Postgresql Setup </summary>
-```
-
+    ```
     sudo pacman -S postgresql # install postgresql
     sudo systemctl start postgresql
     sudo systemctl status postgresql
@@ -39,8 +38,7 @@ to run the test you must:
     # update config file to require password from databases at localhost
     # by changing "trust" to "md5" in METHOD column
     sudo nano /var/lib/postgresql/17/main/pg_hba.conf
-
-```
+    ```
 </details>
 
 <details>
