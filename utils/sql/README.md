@@ -2,7 +2,7 @@
 
 
 <details open>
-<summary>#### Description</summary>
+<summary><b><big>Description</big></b></summary>
 
 example usage of the following python SQL libraries:
  - mysql-connector-python
