@@ -61,8 +61,9 @@
 
 </details>
 
-#### TO DO
-```
+
+<details>
+<summary><h2>TODO:</h2></summary>
 	
 	create optional argument in select query function to save
 	the results to a file, and another argument to read from
@@ -72,4 +73,5 @@
 	create function to run update queries, and test it
 		function created, it just needs to be tested and documented
 
-```
+</details>
+
