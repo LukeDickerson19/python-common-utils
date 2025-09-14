@@ -25,6 +25,7 @@ to run the test you must:
 <details>
 <summary> Linux Postgresql Setup </summary>
     ```
+    
     sudo pacman -S postgresql # install postgresql
     sudo systemctl start postgresql
     sudo systemctl status postgresql
