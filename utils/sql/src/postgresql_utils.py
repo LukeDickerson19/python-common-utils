@@ -9,13 +9,11 @@ import psycopg2 # PostgreSQL database connector
 
 
 # Connect to PostgreSQL
-# default database is 'postgres'
-# 
 HOSTNAME = 'localhost'
 PORT     = '5432'
 USERNAME = 'admin'
 PASSWORD = 'password'
-DATABASE = 'postgres'
+DATABASE = 'postgres' # default database is 'postgres'
 # conn = psycopg2.connect(
 #     dbname=DATABASE,
 #     user=USERNAME,
