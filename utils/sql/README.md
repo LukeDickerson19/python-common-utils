@@ -2,7 +2,7 @@
 
 
 <details open>
-<summary style="font-size: 20px; font-weight: bold;">Description</summary>
+<summary style="font-size: 100px; font-weight: bold;">Description</summary>
 
 example usage of the following python SQL libraries:
  - mysql-connector-python
