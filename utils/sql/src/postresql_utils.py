@@ -94,9 +94,11 @@ cursor.execute("""
     FROM information_schema.tables
     WHERE table_schema = 'public';
 """)
-tables = cursor.fetchall()
+rows = cursor.fetchall()
+column_names = [desc[0] for desc in cursor.description]
+df = pd.DataFrame(rows, columns=column_names)
 print("\n\nList All Table(s):")
-print(tables)
+print(df)
 
 # Insert Data into the Table
 cursor.execute(f"""
@@ -106,12 +108,16 @@ cursor.execute(f"""
 conn.commit()
 print(f'\n\nInserted data into table: "{table_name}"')
 
-# Read Data from the Table
-cursor.execute(f"SELECT * FROM {table_name};")
-rows = cursor.fetchall()
+# # Read Data from the Table
+# # Method 1: Using cursor (manual approach)
+# cursor.execute(f"SELECT * FROM {table_name};")
+# rows = cursor.fetchall()
+# column_names = [desc[0] for desc in cursor.description]
+# df = pd.DataFrame(rows, columns=column_names)
+# Method 2: Direct pandas approach (alternative)
+df = pd.read_sql(f"SELECT * FROM {table_name}", conn)
 print(f'\n\nRead (aka SELECT) data from table: "{table_name}"')
-for row in rows:
-    print(row)
+print(df)
 
 # Delete the Table
 cursor.execute(f"DROP TABLE {table_name};")

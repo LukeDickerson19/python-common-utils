@@ -64,14 +64,8 @@
 
 <details>
 <summary><h2>TODO:</h2></summary>
+
+    update mysql_utils.py and oracle_sql_utils.py to not be a class, and just use similar file content to postgreql_utils.py
 	
-	create optional argument in select query function to save
-	the results to a file, and another argument to read from
-	a file if it exists
-		this will be helpful in only running long lasting queries once
-
-	create function to run update queries, and test it
-		function created, it just needs to be tested and documented
-
 </details>
 
