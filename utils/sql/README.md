@@ -5,20 +5,20 @@
 <summary><h2>Description</h2></summary>
 
     example usage of the following python SQL libraries:
-    - mysql-connector-python
-    - cx-Oracle
-    - psycopg2
+        mysql-connector-python
+        cx-Oracle
+        psycopg2
 
     shows how to:
-    - connect/disconnect to a SQL database
-    - run arbitrary SQL queries/commands
+        connect/disconnect to a SQL database
+        run arbitrary SQL queries/commands
 
     to run the test you must:
-    - set up a sql db, give it a table called eam_assets with columns:
-        - asset_id, provider_id, description
-    - in the tests/libraries_and_constants.py file, enter the:
-        - TEST_HOSTNAME, TEST_PORT, TEST_USERNAME, TEST_PASSWORD, TEST_DATABASE
-        - tested with Python version 3.13.5 and library versions in requirements.txt
+        set up a sql db, give it a table called eam_assets with columns:
+            asset_id, provider_id, description
+        in the tests/libraries_and_constants.py file, enter the:
+            TEST_HOSTNAME, TEST_PORT, TEST_USERNAME, TEST_PASSWORD, TEST_DATABASE
+            tested with Python version 3.13.5 and library versions in requirements.txt
 
 </details>
 
