@@ -2,7 +2,7 @@
 
 
 <details open>
-<summary>Description</summary>
+<summary>#### Description</summary>
 
 example usage of the following python SQL libraries:
  - mysql-connector-python
@@ -23,7 +23,7 @@ to run the test you must:
 </details>
 
 <details>
-<summary> Linux Postgresql Setup </summary>
+<summary> #### Linux Postgresql Setup </summary>
     
     sudo pacman -S postgresql # install postgresql
     sudo systemctl start postgresql
