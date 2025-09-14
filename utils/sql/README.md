@@ -44,30 +44,6 @@ to run the test you must:
 </details>
 
 <details>
-<summary>Main Section</summary>
-
-This is the main content that can be collapsed.
-
-<details>
-<summary>Nested Subsection 1: default closed</summary>
-
-Content for nested subsection 1.
-- Item 1
-- Item 2
-
-</details>
-
-<details open>
-<summary>Nested Subsection 2: default open</summary>
-
-Content for nested subsection 2.
-```python
-def example():
-    return "code block"
-```
-</details>
-
-<details>
 <summary>Sources</summary>
 
 MySQL Connector/Python Docs
