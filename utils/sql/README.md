@@ -26,19 +26,19 @@ to run the test you must:
 <summary> Linux Postgresql Setup </summary>
 ```
 
-sudo pacman -S postgresql # install postgresql
-sudo systemctl start postgresql
-sudo systemctl status postgresql
+    sudo pacman -S postgresql # install postgresql
+    sudo systemctl start postgresql
+    sudo systemctl status postgresql
 
-# create example 'admin' superuser w/ password 'password'
-sudo -u postgres psql
-    CREATE ROLE admin WITH LOGIN PASSWORD 'password';
-    ALTER ROLE admin CREATEDB;
-    ALTER ROLE admin WITH SUPERUSER;
+    # create example 'admin' superuser w/ password 'password'
+    sudo -u postgres psql
+        CREATE ROLE admin WITH LOGIN PASSWORD 'password';
+        ALTER ROLE admin CREATEDB;
+        ALTER ROLE admin WITH SUPERUSER;
 
-# update config file to require password from databases at localhost
-# by changing "trust" to "md5" in METHOD column
-sudo nano /var/lib/postgresql/17/main/pg_hba.conf
+    # update config file to require password from databases at localhost
+    # by changing "trust" to "md5" in METHOD column
+    sudo nano /var/lib/postgresql/17/main/pg_hba.conf
 
 ```
 </details>
