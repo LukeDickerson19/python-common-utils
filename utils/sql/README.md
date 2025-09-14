@@ -1,29 +1,29 @@
 # SQL Utilities
 
 
+<details open>
+<summary>Description</summary>
 
-#### DESCRIPTION
-```
-	example usage of the following python SQL libraries:
-        mysql-connector-python
-        cx-Oracle
-        psycopg2
+example usage of the following python SQL libraries:
+ - mysql-connector-python
+ - cx-Oracle
+ - psycopg2
 
-	shows how to:
-        connect/disconnect to a SQL database
-        run arbitrary SQL queries/commands
+shows how to:
+ - connect/disconnect to a SQL database
+ - run arbitrary SQL queries/commands
 
-	to run the test you must:
-		set up a sql db, give it a table called eam_assets with columns:
-			asset_id, provider_id, description
-		in the tests/libraries_and_constants.py file, enter the:
-			TEST_HOSTNAME, TEST_PORT, TEST_USERNAME, TEST_PASSWORD, TEST_DATABASE
+to run the test you must:
+ - set up a sql db, give it a table called eam_assets with columns:
+    - asset_id, provider_id, description
+ - in the tests/libraries_and_constants.py file, enter the:
+    - TEST_HOSTNAME, TEST_PORT, TEST_USERNAME, TEST_PASSWORD, TEST_DATABASE
+    - tested with Python version 3.13.5 and library versions in requirements.txt
 
-        tested with Python version 3.13.5 and library versions in requirements.txt
+</details>
 
-```
-
-#### LINUX POSTGRESQL SETUP
+<details open>
+<summary> Linux Postgresql Setup </summary>
 ```
 
 sudo pacman -S postgresql # install postgresql
@@ -41,6 +41,7 @@ sudo -u postgres psql
 sudo nano /var/lib/postgresql/17/main/pg_hba.conf
 
 ```
+</details>
 
 <details>
 <summary>Main Section</summary>
@@ -66,6 +67,25 @@ def example():
 ```
 </details>
 
+<details>
+<summary>Sources</summary>
+
+MySQL Connector/Python Docs
+https://github.com/mysql/mysql-connector-python
+
+Oracle Database Connection in Python
+ - cx_Oracle lib requires Oracle Client libraries
+    - download the Basic one
+       - https://www.oracle.com/database/technologies/instant-client.html
+ - and add it to your path:
+    - C:\oracle\instantclient_19_10
+ - https://cx-oracle.readthedocs.io/en/latest/user_guide/installation.html
+https://www.geeksforgeeks.org/oracle-database-connection-in-python/
+
+PostgreSQL Connector
+https://pypi.org/project/psycopg2/
+
+</details>
 
 #### TO DO
 ```
@@ -79,24 +99,3 @@ def example():
 		function created, it just needs to be tested and documented
 
 ```
-
-#### SOURCES
-```
-
-	MySQL Connector/Python Docs
-	https://github.com/mysql/mysql-connector-python
-
-	Oracle Database Connection in Python
-		cx_Oracle lib requires Oracle Client libraries
-			download the Basic one
-				https://www.oracle.com/database/technologies/instant-client.html
-			and add it to your path:
-				C:\oracle\instantclient_19_10
-		https://cx-oracle.readthedocs.io/en/latest/user_guide/installation.html
-	https://www.geeksforgeeks.org/oracle-database-connection-in-python/
-
-    PostgreSQL Connector
-    https://pypi.org/project/psycopg2/
-
-```
-
