@@ -1,0 +1,22 @@
+
+I tried a bunch of stuff to connect my computer to my phone via bluetooth
+but I was getting a lot of errors and then discovered SMB servers (via SAMBA)
+so these were never finished. These are the sources if you ever want to try
+to get it working.
+
+	PyBluez
+		https://people.csail.mit.edu/albert/bluez-intro/c212.html
+	https://pypi.org/project/PyBluez/
+
+	GSConnect
+	https://www.omgubuntu.co.uk/2018/11/connect-android-ubuntu-gsconnect
+
+	blueman
+		sudo apt-get install blueman
+	https://www.maketecheasier.com/setup-bluetooth-in-linux/
+
+	bluetoothctl 
+	https://avilpage.com/2017/10/bluetooth-communication-between-ubuntu-android.html
+
+	python bluetool
+	https://pypi.org/project/bluetool/

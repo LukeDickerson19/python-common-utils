@@ -1,12 +1,6 @@
 
+**/__pycache__/
 
-
-/utils/logging/src/__pycache__/
-/utils/logging/tests/__pycache__/
-/utils/email/outlook/src/__pycache__/
-/utils/email/outlook/tests/__pycache__/
-/utils/sql/mysql/src/__pycache__/
-/utils/sql/mysql/tests/__pycache__/
-/utils/sql/oracle_sql/src/__pycache__/
-/utils/sql/oracle_sql/tests/__pycache__/
+.directory
+.python_logo.png
 

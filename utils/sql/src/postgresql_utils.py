@@ -96,6 +96,19 @@ df = pd.read_sql(f"SELECT * FROM {table_name}", conn)
 print(f'\n\nRead (aka SELECT) data from table: "{table_name}"')
 print(df)
 
+# function to check if a table exists
+def table_exists(conn, table, schema="public"):
+    with conn.cursor() as cur:
+        cur.execute(f"""
+            SELECT EXISTS (
+                SELECT 1
+                FROM information_schema.tables 
+                WHERE table_schema = {schema} 
+                AND table_name = {table}
+            );
+        """)
+        return cur.fetchone()[0]
+
 # Delete the Table
 cursor.execute(f"DROP TABLE {table_name};")
 conn.commit()

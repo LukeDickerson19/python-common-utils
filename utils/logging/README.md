@@ -3,14 +3,13 @@
 
 
 #### DESCRIPTION
-```
-logging class with the following features:
-	set indendation of string being printed
-	print on the same line
-	print time of when string was printed
-	print memory usage of code when string was printed
-	print to console and to file individually or simultaniously
-```
+> logging class with the following features:
+> - set indendation of string being printed
+> - print on the same line (overwritting previous line)
+> - print time of when string was printed
+> - print memory usage of code when string was printed
+> - print to console and to file individually or simultaniously
+
 
 #### USAGE
 ```
@@ -63,21 +62,4 @@ Example Log:
 	Successfully aquired all IDs from title_asset_id.
 ```
 
-
-#### TO DO
-```
-New Features:
-
-	none
-
-Bug Fixes:
-
-	the print_same_line function does not print to the same line
-	in the actual log file. It should convert the contents of the
-	log equal to lenght of blanked_out_previous_string to blank
-	space character, then replace them with the new text
-
-	also, why doesn't the print_same_line functino print to the same
-	line in the console when on windows, but it works on linux?
-```
 

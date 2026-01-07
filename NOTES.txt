@@ -1,0 +1,46 @@
+
+
+TODO:
+
+    none
+
+
+BACKLOG:
+
+    enable logging util to overwrite prev line in logfile too (not just console)
+
+        the print_same_line function does not print to the same line
+        in the actual log file. It should convert the contents of the
+        log equal to length of blanked_out_previous_string to blank
+        space character, then replace them with the new text
+
+        also, why doesn't the print_same_line function print to the same
+        line in the console when on windows, but it works on linux?
+
+    fix up general utils
+        required for aws_utils to work
+
+    fix up aws utils
+
+    fix up snowflake utils
+
+    clean up the notes above each function
+        or maybe make a docs page in markdown
+
+    maybe make the logging utils a python lib
+        how to create a python library
+        https://medium.com/analytics-vidhya/how-to-create-a-python-library-7d5aea80cc3f
+    https://medium.com/@joel.barmettler/how-to-upload-your-python-package-to-pypi-65edc5fe9c56
+
+
+ERRORS:
+
+    fix pip in virtual env
+        sudo mv /usr/lib/python3.11/EXTERNALLY-MANAGED /usr/lib/python3.11/EXTERNALLY-MANAGED.old
+        https://stackoverflow.com/questions/75608323/how-do-i-solve-error-externally-managed-environment-every-time-i-use-pip-3
+
+
+SOURCES:
+
+    https://www.python.org/
+    https://pypi.org/project/pip/

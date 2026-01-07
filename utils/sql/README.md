@@ -39,6 +39,42 @@
     # by changing "trust" to "md5" in METHOD column
     sudo nano /var/lib/postgresql/17/main/pg_hba.conf
 
+    # update tmp dir to be recreated automatically on boot
+    sudo nano /etc/tmpfiles.d/postgresql.conf # create file
+    copy/paste, and save this file content:
+        D /run/postgresql 0755 postgres postgres -
+    sudo systemd-tmpfiles --create # apply this configuration
+
+    # i didn't setup postgres to autostart when booting up the compter, so run this each time:
+    sudo systemctl start postgresql
+    # to setup autostart, run: sudo systemctl enable postgresql
+
+    postgres db stored at:
+        /var/lib/postgresql/17/main
+        found with:
+            psql -U admin -d postgres -c "SHOW data_directory;"
+                see file: postgresql_credentials.json for password
+
+</details>
+
+<details>
+<summary><h2>Linux Postgresql Usage</h2></summary>
+
+    sudo systemctl status postgresql # chech if postgres is running
+    sudo systemctl start postgresql # start it if it isn't
+
+    # list all databases (as admin user)
+    psql -U admin -l
+
+    # enter postgres terminal shell as admin user
+    psql -U admin -d mydatabase
+
+    # see file src/postgresql_utils.py for example SQL commands to run
+
+    # from within psql shell run
+    \? # for help menu
+    exit # to exit the shell
+
 </details>
 
 <details>

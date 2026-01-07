@@ -1,8 +1,39 @@
-from libraries_and_constants import *
+
+# LIBRARIES
+
+# import standard libraries
+import os
+import sys
+import time
+import pathlib
+
+# import non-standard libraries
+# None
+
+# import common utils
+COMMON_UTILS_REPO_PATH = str(pathlib.Path(__file__).resolve().parent.parent.parent.parent)
+LOG_UTIL_PATH          = os.path.join(COMMON_UTILS_REPO_PATH, 'utils', 'logging', 'src')
+sys.path.append(LOG_UTIL_PATH)
+import logging_utils
+# print('COMMON_UTILS_REPO_PATH\t', COMMON_UTILS_REPO_PATH)
+# print('LOG_UTIL_PATH\t', LOG_UTIL_PATH)
 
 
 
-def test_print(log):
+# CONSTANTS
+LOG_FILENAME = 'log.txt' # 'log_%s' % datetime.utcnow().strftime("%Y-%m-%d_%H-%M-%S.txt")
+LOG_FILEPATH = os.path.join(COMMON_UTILS_REPO_PATH, 'utils', 'logging', 'log', LOG_FILENAME)
+# print('LOG_FILEPATH\t', LOG_FILEPATH)
+
+
+log = logging_utils.Log(
+	LOG_FILEPATH,
+	output_to_console=True,
+	output_to_logfile=True,
+)
+
+def test_print():
+	log.print('\ntest_print():')
 
 	# test num_indents and multi line indentation
 	log.print('a', i=0)
@@ -12,108 +43,121 @@ def test_print(log):
 	log.print('e', i=4)
 	log.print('indented\nmulti\nline\nstring', i=5)
 
-	# test new_line_start
+	# test new line start
 	console_str, logfile_str = log.print(
-		'new_line_start=True, draw_line=False',
+		'new line start = True, draw line = False',
 		i=1, ns=True)
 	console_str, logfile_str = log.print(
-		'new_line_start=True, draw_line=True',
+		'new line start = True, draw line = True',
 		i=1, ns=True, d=True)
 	console_str, logfile_str = log.print(
-		'new_line_start=False',
+		'new line start = False',
 		i=1, ns=False)
 
-	# test new_line_end
+	# test new line end
 	console_str, logfile_str = log.print(
-		'new_line_end=True, draw_line=False',
+		'new line end = True, draw line = False',
 		i=1, ne=True)
 	console_str, logfile_str = log.print(
-		'new_line_end=True, draw_line=True',
+		'new line end = True, draw line = True',
 		i=1, ne=True, d=True)
 	console_str, logfile_str = log.print(
-		'new_line_end=False',
+		'new line end = False',
 		i=1, ne=False)
 
-	# test prepend date
-	log2 = logging_utils.Log(prepend_datetime_fmt='%y-%m-%d %H:%M:%S.%f %Z')
+	# test return value
+	print('\n    console_str:', console_str)
+	print('\n    logfile_str:', logfile_str)	
+	print()
+
+	# test prepend datetime
+	log2 = logging_utils.Log(
+		output_to_console=True,
+		output_to_logfile=False,
+		prepend_datetime_fmt='%y-%m-%d %H:%M:%S.%f %Z')
 	log2.print('testing single line prepend_datetime_fmt', ns=True)
 	log2.print('testing\nmulti\nline\nprepend_datetime_fmt')
 	log2.print('testing single line indented prepend_datetime_fmt', i=1)
 
 	# test prepend memory usage
-	log3 = logging_utils.Log(prepend_memory_usage=True)
+	log3 = logging_utils.Log(
+		output_to_console=True,
+		output_to_logfile=False,
+		prepend_memory_usage=True)
 	log3.print('testing single line prepend_memory_usage', ns=True)
 	log3.print('testing\nmulti\nline\nprepend_memory_usage')
-	log2.print('testing single line indented prepend_memory_usage', i=1)
+	log3.print('testing single line indented prepend_memory_usage', i=1)
 
-	# test return value
-	print('\nconsole_str:')
-	print(console_str)
-	print('\nlogfile_str:')
-	print(logfile_str)	
-	print()
+	# test both prepend datetime and memory usage
+	log4 = logging_utils.Log(
+		output_to_console=True,
+		output_to_logfile=False,
+		prepend_datetime_fmt='%y-%m-%d %H:%M:%S.%f %Z',
+		prepend_memory_usage=True)
+	log4.print('testing single line prepend_datetime_fmt and prepend_memory_usage', ns=True)
+	log4.print('testing\nmulti\nline\nprepend_datetime_fmt\nand\nprepend_memory_usage')
+	log4.print('testing single line indented prepend_datetime_fmt and prepend_memory_usage', i=1)
 
-def test_print_dct(log):
+def test_print_dct():
+	log.print('\ntest_print_dct():')
 	dct0 = {'a' : 1, 'b' : 2, 'c' : 3}
-	log.print_dct(dct0, i=3)
-	print()
+	log.print_dct(dct0, i=1, ne=True)
 
-def test_print_same_line(log):
+def test_overwrite_prev_print():
+	log.print('\ntest_overwrite_prev_print():')
 
 	sleep_time = 0.5 # seconds
-	num_indents = 3
-	print('... starting test_print_same_line on this line ...')
+	i = 1
 
 	# new text has shorter lines
-	log.print_same_line('aaaa', i=num_indents)
+	log.print('aaaa', i=i, overwrite_prev_print=False)
 	time.sleep(sleep_time)
-	log.print_same_line('bbb', i=num_indents)
+	log.print('bbb', i=i, overwrite_prev_print=True)
 	time.sleep(sleep_time)
-	log.print_same_line('cc', i=num_indents)
+	log.print('cc', i=i, overwrite_prev_print=True)
 	time.sleep(sleep_time)
-	log.print_same_line('d', i=num_indents)
+	log.print('d', i=i, overwrite_prev_print=True)
 	time.sleep(sleep_time)
-	log.print_same_line('', i=0)
+	log.print('', i=0, overwrite_prev_print=True)
 	time.sleep(sleep_time)
 
 	# new text has longer lines
-	log.print_same_line('a', i=num_indents)
+	log.print('a', i=i, overwrite_prev_print=True)
 	time.sleep(sleep_time)
-	log.print_same_line('bb', i=num_indents)
+	log.print('bb', i=i, overwrite_prev_print=True)
 	time.sleep(sleep_time)
-	log.print_same_line('ccc', i=num_indents)
+	log.print('ccc', i=i, overwrite_prev_print=True)
 	time.sleep(sleep_time)
-	log.print_same_line('dddd', i=num_indents)
+	log.print('dddd', i=i, overwrite_prev_print=True)
 	time.sleep(sleep_time)
-	log.print_same_line('', i=0)
+	log.print('', i=0, overwrite_prev_print=True)
 	time.sleep(sleep_time)
 
 	# new text has more lines
-	log.print_same_line('a', i=num_indents)
+	log.print('a', i=i, overwrite_prev_print=True)
 	time.sleep(sleep_time)
-	log.print_same_line('b\nb', i=num_indents)
+	log.print('b\nb', i=i, overwrite_prev_print=True)
 	time.sleep(sleep_time)
-	log.print_same_line('c\nc\nc', i=num_indents)
+	log.print('c\nc\nc', i=i, overwrite_prev_print=True)
 	time.sleep(sleep_time)
-	log.print_same_line('d\nd\nd\nd', i=num_indents)
+	log.print('d\nd\nd\nd', i=i, overwrite_prev_print=True)
 	time.sleep(sleep_time)
-	log.print_same_line('', i=0)
+	log.print('', i=0, overwrite_prev_print=True)
 	time.sleep(sleep_time)
 
 	# new text has less lines
-	log.print_same_line('a\na\na\na', i=num_indents)
+	log.print('a\na\na\na', i=i, overwrite_prev_print=True)
 	time.sleep(sleep_time)
-	log.print_same_line('b\nb\nb', i=num_indents)
+	log.print('b\nb\nb', i=i, overwrite_prev_print=True)
 	time.sleep(sleep_time)
-	log.print_same_line('c\nc', i=num_indents)
+	log.print('c\nc', i=i, overwrite_prev_print=True)
 	time.sleep(sleep_time)
-	log.print_same_line('d', i=num_indents)
+	log.print('d', i=i, overwrite_prev_print=True)
 	time.sleep(sleep_time)
-	log.print_same_line('', i=0, end='')
+	log.print('', i=0, end='', overwrite_prev_print=True)
 	time.sleep(sleep_time)
-	print('... ending test_print_same_line on this line ...')
 
-	# verify regular log.print() works after print_same_line()
+	# verify regular log.print() works after overwrite_prev_print
 	log.print('a', i=0)
 	log.print('b', i=1)
 	log.print('c', i=2)
@@ -121,26 +165,26 @@ def test_print_same_line(log):
 	log.print('e', i=4)
 	log.print('indented\nmulti\nline\nstring', i=5)
 
-	# verify print_same_line() works after regular log.print()
-	log.print_same_line('testing', i=num_indents)
+	# verify overwrite_prev_print works after regular log.print()
+	log.print('test', i=i, overwrite_prev_print=True)
 	time.sleep(3*sleep_time)
-	log.print_same_line('print_same_line()', i=num_indents)
+	log.print('overwrite_prev_print', i=i, overwrite_prev_print=True)
 	time.sleep(3*sleep_time)
-	log.print_same_line('after', i=num_indents)
+	log.print('after', i=i, overwrite_prev_print=True)
 	time.sleep(3*sleep_time)
-	log.print_same_line('regular print()', i=num_indents)
+	log.print('regular print()', i=i, overwrite_prev_print=True)
 	time.sleep(3*sleep_time)
-	log.print_same_line('', i=0, end='')
+	log.print('', i=0, end='', overwrite_prev_print=True)
 	time.sleep(3*sleep_time)
 
-	log.print('testing regular print() after print_same_line() again', i=num_indents)
-	print()
+	log.print('test regular print() after overwrite_prev_print', i=i, ne=True)
 
 
 
 if __name__ == '__main__':
 
-	log = logging_utils.Log(LOG_FILEPATH)
-	test_print(log)
-	# test_print_dct(log)
-	# test_print_same_line(log)
+	# test_print()
+	# test_print_dct()
+	test_overwrite_prev_print()
+
+	log.close()

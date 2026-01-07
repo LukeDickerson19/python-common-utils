@@ -7,7 +7,7 @@ import sys
 import json
 from datetime import datetime
 from zoneinfo import ZoneInfo
-import tracemalloc # used to get memory usage of code using logging
+import psutil  # used to get memory usage of code using logging
 
 # import non-standard libraries
 import pandas as pd
@@ -31,17 +31,17 @@ class Log:
             Initialize a log to print to the console and/or a log file.
 
         Arguments:
-            log_filepath ........... string .... complete path to the log file
+            log_filepath ........... string .... path to the log file
             output_to_console ...... boolean ... flag to print to the console or not
             output_to_logfile ...... boolean ... flag to print to the log file or not
             clear_old_log .......... boolean ... flag to clear the log file or not
             indent ................. string .... what an indent looks like in the log
             prepend_datetime_fmt ... string .... format specifying datetime to prepend to each line printed
             timezone ............... string .... timezone to use if prepend_datetime_fmt is not an empty string
-            prepend_memory_usage ... boolean ... prepend the memory used and allocated to the python program
+            prepend_memory_usage ... boolean ... prepend the memory used by the python program
 
         Returns:
-            Nothing
+            Log object
 
         '''
     def __init__(
@@ -62,9 +62,8 @@ class Log:
         self.prepend_datetime_fmt = prepend_datetime_fmt
         self.timezone = timezone
         self.prepend_memory_usage = prepend_memory_usage
-        if self.prepend_memory_usage:
-            tracemalloc.start()
 
+        self.logfile = None
         if log_filepath != None:
 
             # create logfile if it doesn't exist
@@ -76,18 +75,25 @@ class Log:
             if clear_old_log:
                 open(self.path, 'w').close()
 
+            self.logfile = open(self.path, 'r+')
+
         # variables used for print_same_line()
         self.blanked_out_previous_string = []
         self.same_line_string = False
 
         # variables used for print_prev_line
-        self.prev_string = ''
+        self.prev_string = None
+
+        # logfile overwrite state
+        self._logfile_last_pos = None      # byte offset where last log entry started
+        self._logfile_last_len = 0         # length in bytes of last written entry
+
 
     ''' print()
 
         Description:
             Log 'string' argument to logfile and/or console.
-            Set how indented the line should be with 'num_indents' int argument.
+            Set how many indents the msg should have with i int argument
                 ^^^ very useful for organizing log ^^^
 
         Arguments:
@@ -128,7 +134,7 @@ class Log:
         console_str, logfile_str = None, None
         output_to_console = self.output_to_console if oc == None else oc
         if output_to_console:
-            if overwrite_prev_print and self.prev_string != '':
+            if overwrite_prev_print and self.prev_string != None:
                 sys.stdout.flush()
                 # Move cursor up for each line and clear it
                 for _ in self.prev_string.split('\n'):
@@ -142,28 +148,43 @@ class Log:
                     i=i,
                     ns=ns,
                     ne=ne,
-                    d=d)
+                    d=d,
+                    end=end)
             print(
                 console_str,
                 end=end,
                 file=sys.stdout)
-            self.prev_string = console_str # used from print_prev_line(), disregard
+            self.prev_string = console_str # used for overwrite_prev_print
         output_to_logfile = self.output_to_logfile if of == None else of
         if output_to_logfile:
-            logfile_str = \
-                self.get_formatted_string(
-                    string,
-                    len(self.indent)*' ',
-                    i=i,
-                    ns=ns,
-                    ne=ne,
-                    d=d)
-            logfile = open(self.path, 'a')
-            print(
-                logfile_str,
-                end=end,
-                file=logfile)
-            logfile.close()
+            logfile_str = self.get_formatted_string(
+                string,
+                len(self.indent) * ' ',
+                i=i,
+                ns=ns,
+                ne=ne,
+                d=d,
+                end=end
+            )
+
+            encoded = (logfile_str + end).encode('utf-8')
+            new_len = len(encoded)
+
+            if overwrite_prev_print and self._logfile_last_pos is not None:
+                self.logfile.seek(self._logfile_last_pos) # seek back to previous entry
+                self.logfile.write(logfile_str + end) # overwrite content
+                if new_len < self._logfile_last_len:
+                    # pad leftover bytes if new entry is shorter
+                    self.logfile.write(' ' * (self._logfile_last_len - new_len))
+                self.logfile.truncate(self._logfile_last_pos + new_len) # truncate file to current position
+                self.logfile.flush()
+            else:
+                # normal append
+                self._logfile_last_pos = self.logfile.tell()
+                self.logfile.write(logfile_str + end)
+                self.logfile.flush()
+
+            self._logfile_last_len = new_len
         return console_str, logfile_str
 
     ''' print_dct()
@@ -262,16 +283,17 @@ class Log:
         i=0, # i = number of indents
         ns=False, # ns = newline start
         ne=False, # ne = newline end
-        d=False): # d = draw line
+        d=False, # d = draw line
+        end='\n', # end = print end char
+        ): 
 
         total_indent0 = ''.join([indent0] * i)
         total_indent1 = ''.join([indent0] * (i + 1))
         string = ''
         div_mark = '-'
         mock_indent = ' '
-        max_estimated_indents = 10
+        max_estimated_indents = 10 # set it to a number larger than the estimated max number of indents you'll ever use while logging
         assert i <= max_estimated_indents
-        prepend_sep = ' ' * (max_estimated_indents + 1) # set it to a number larger than the estimated max number of indents you'll ever use while logging
         p0 = '' # p0 = mock indents
         p = '' # p = prepended info after mock indents
         prepend_stuff = self.prepend_datetime_fmt != '' or self.prepend_memory_usage
@@ -280,18 +302,23 @@ class Log:
                 now = datetime.now(ZoneInfo(self.timezone))
                 p += now.strftime(self.prepend_datetime_fmt) + '  '
             if self.prepend_memory_usage:
-                bytes_used, bytes_allocated = tracemalloc.get_traced_memory()
+                try:
+                    proc = psutil.Process(os.getpid())
+                    bytes_used = proc.memory_info().rss
+                    mem_usage_str = f"{Log.convert_bytes(bytes_used)} used  "
+                except:
+                    mem_usage_str = "Memory read error  "
                 if self.prepend_datetime_fmt != '':
                     p += f'{div_mark}  '
-                p += f'{Log.convert_bytes(bytes_used)} used {Log.convert_bytes(bytes_allocated)} allocated'.ljust(45, ' ') # pad w/ spaces
+                p += mem_usage_str.rjust(17, ' ') # pad w/ spaces
             p0 = mock_indent*i + div_mark
-            p = prepend_sep[:len(prepend_sep) - len(mock_indent*i)] + p + f'{div_mark}  ' # put small 1 space indents before everything so VS Code's code folding features continues to work when there's prepended info such as memory or datetime
+            p = (' ' * (max_estimated_indents + 1 - len(mock_indent*i))) + p + f'{div_mark}  ' # put small 1-space-sized indents before everything so VS Code's code folding feature continues to work when there's prepended info such as memory or datetime
         blank_p = p0 + ' ' * (len(p) - (len(div_mark) + 2)) + f'{div_mark}  ' # blank_p = p but w/ prepend info removed, only marks remain
         if ns:
             # print(1, string, 1)
             string += blank_p if prepend_stuff else ''
             # print(2, string, 2)
-            string += (total_indent1 if d else total_indent0) + '\n'
+            string += (total_indent1 if d else total_indent0) + end
             # print(3, string, 3)
         for s in string0.split('\n'):
             if prepend_stuff:
@@ -305,10 +332,10 @@ class Log:
                 total_indent = total_indent1 if d else total_indent0
             else:
                 total_indent = total_indent0
-            string += total_indent + s + '\n'
+            string += total_indent + s + end
         if ne:
             string += blank_p if prepend_stuff else ''
-            string += (total_indent1 if d else total_indent0) + '\n'
+            string += (total_indent1 if d else total_indent0) + end
         string = string[:-1] # remove final newline character
         return string
 
@@ -339,3 +366,6 @@ class Log:
         else:
             return f"{b:.4f} {units[index]}"
 
+    def close(self):
+        if self.logfile != None:
+            self.logfile.close()
