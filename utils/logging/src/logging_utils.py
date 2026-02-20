@@ -77,16 +77,9 @@ class Log:
 
             self.logfile = open(self.path, 'r+')
 
-        # variables used for print_same_line()
-        self.blanked_out_previous_string = []
-        self.same_line_string = False
-
-        # variables used for print_prev_line
+        # init variables used for print arg overwrite_prev_print
         self.prev_string = None
-
-        # logfile overwrite state
-        self._logfile_last_pos = None      # byte offset where last log entry started
-        self._logfile_last_len = 0         # length in bytes of last written entry
+        self._logfile_last_pos = None # byte offset where last log entry started
 
 
     ''' print()
@@ -137,12 +130,12 @@ class Log:
             if overwrite_prev_print and self.prev_string != None:
                 sys.stdout.flush()
                 # Move cursor up for each line and clear it
-                for _ in self.prev_string.split('\n'):
+                for _ in range(self.prev_string.count('\n')):
                     # Move cursor up one line
                     sys.stdout.write("\033[F")   # Cursor up 1 line
                     sys.stdout.write("\033[K")   # Clear line
             console_str = \
-                self.get_formatted_string(
+                self.get_formatted_message(
                     string,
                     self.indent,
                     i=i,
@@ -152,12 +145,12 @@ class Log:
                     end=end)
             print(
                 console_str,
-                end=end,
+                end="", # get_formatted_message handles end arg
                 file=sys.stdout)
             self.prev_string = console_str # used for overwrite_prev_print
         output_to_logfile = self.output_to_logfile if of == None else of
         if output_to_logfile:
-            logfile_str = self.get_formatted_string(
+            logfile_str = self.get_formatted_message(
                 string,
                 len(self.indent) * ' ',
                 i=i,
@@ -167,24 +160,20 @@ class Log:
                 end=end
             )
 
-            encoded = (logfile_str + end).encode('utf-8')
+            encoded = (logfile_str).encode('utf-8')
             new_len = len(encoded)
 
             if overwrite_prev_print and self._logfile_last_pos is not None:
-                self.logfile.seek(self._logfile_last_pos) # seek back to previous entry
-                self.logfile.write(logfile_str + end) # overwrite content
-                if new_len < self._logfile_last_len:
-                    # pad leftover bytes if new entry is shorter
-                    self.logfile.write(' ' * (self._logfile_last_len - new_len))
-                self.logfile.truncate(self._logfile_last_pos + new_len) # truncate file to current position
+                self.logfile.seek(self._logfile_last_pos) # seek back to start of previous message
+                self.logfile.write(logfile_str) # overwrite previous message with new message
+                self.logfile.truncate(self._logfile_last_pos + new_len) # truncate file to end of new message (discards anything beyond)
                 self.logfile.flush()
             else:
                 # normal append
                 self._logfile_last_pos = self.logfile.tell()
-                self.logfile.write(logfile_str + end)
+                self.logfile.write(logfile_str)
                 self.logfile.flush()
 
-            self._logfile_last_len = new_len
         return console_str, logfile_str
 
     ''' print_dct()
@@ -256,16 +245,16 @@ class Log:
             d=d,
             end=end)
 
-    ''' get_formatted_string()
+    ''' get_formatted_message()
 
         Description:
-            create a string with string0, indent0, and other optional arguments that is concatenated properly for printing.
+            create a string with msg, indent0, and other optional arguments that is concatenated properly for printing.
             it also prepends the datetime and the memory usage if the user requested it
 
             WARNING: this function is honestly some of the worst spagetti I've ever written, but the log is gorgeous!
 
         Arguments:
-            string0 .......... string .... what will be printed
+            msg .............. string .... what will be printed
             indent0 .......... string .... what an indent looks like
             i ................ int ....... number of indents to put in front of the string
             ns ............... boolean ... print a new line in before the string
@@ -273,34 +262,39 @@ class Log:
             d ................ boolean ... draw a line on the blank line before or after the string
 
         Returns:
-            string ... string ... string0 with indent0 and other optional arguments concatenated properly
+            formatted_message ... string ... msg with indent0 and other optional arguments concatenated properly
 
         '''
-    def get_formatted_string(
+    def get_formatted_message(
         self,
-        string0,
-        indent0,
+        msg,
+        indent,
         i=0, # i = number of indents
         ns=False, # ns = newline start
         ne=False, # ne = newline end
         d=False, # d = draw line
         end='\n', # end = print end char
-        ): 
+        ):
 
-        total_indent0 = ''.join([indent0] * i)
-        total_indent1 = ''.join([indent0] * (i + 1))
-        string = ''
+        total_indent1 = ''.join([indent] * i)
+        total_indent2 = ''.join([indent] * (i + 1))
+        total_indent3 = total_indent2 if d else total_indent1
+        formatted_message = ''
         div_mark = '-'
         mock_indent = ' '
         max_estimated_indents = 10 # set it to a number larger than the estimated max number of indents you'll ever use while logging
         assert i <= max_estimated_indents
-        p0 = '' # p0 = mock indents
-        p = '' # p = prepended info after mock indents
+        p = '' # p = prepended info text
+        p0 = '' # p0 = mock indents: If info is prepended to each line, mock indents are tiny indents before the prepended info. They exist so VS Code's code folding feature continues to work when there's prepended info, and the prepended info remains veritically alligned.
         prepend_stuff = self.prepend_datetime_fmt != '' or self.prepend_memory_usage
         if prepend_stuff:
+
+            # Prepend datetime in specified format
             if self.prepend_datetime_fmt != '':
                 now = datetime.now(ZoneInfo(self.timezone))
                 p += now.strftime(self.prepend_datetime_fmt) + '  '
+
+            # Prepend memory usage
             if self.prepend_memory_usage:
                 try:
                     proc = psutil.Process(os.getpid())
@@ -311,33 +305,35 @@ class Log:
                 if self.prepend_datetime_fmt != '':
                     p += f'{div_mark}  '
                 p += mem_usage_str.rjust(17, ' ') # pad w/ spaces
-            p0 = mock_indent*i + div_mark
-            p = (' ' * (max_estimated_indents + 1 - len(mock_indent*i))) + p + f'{div_mark}  ' # put small 1-space-sized indents before everything so VS Code's code folding feature continues to work when there's prepended info such as memory or datetime
-        blank_p = p0 + ' ' * (len(p) - (len(div_mark) + 2)) + f'{div_mark}  ' # blank_p = p but w/ prepend info removed, only marks remain
+
+            # Create prepended info strings
+            p0 = mock_indent * i
+            p0_remainder = (" " * len(mock_indent)) * (max_estimated_indents + 1 - i)
+            p = p0_remainder + p + f'{div_mark}  '
+
+        # blank_p is the same as p but w/ prepend info removed, only marks remain
+        blank_p = p0 + div_mark + (' ' * (len(p) - 3)) + f'{div_mark}  '
+
         if ns:
-            # print(1, string, 1)
-            string += blank_p if prepend_stuff else ''
-            # print(2, string, 2)
-            string += (total_indent1 if d else total_indent0) + end
-            # print(3, string, 3)
-        for s in string0.split('\n'):
             if prepend_stuff:
-                if s == '':
-                    string += blank_p
+                formatted_message += blank_p
+            formatted_message += total_indent3 + '\n'
+
+        for line in msg.split('\n'):
+            empty = line == ''
+            if prepend_stuff:
+                if empty:
+                    formatted_message += blank_p
                 else:
-                    string += p0 + p
-            else:
-                string += ''
-            if s == '':
-                total_indent = total_indent1 if d else total_indent0
-            else:
-                total_indent = total_indent0
-            string += total_indent + s + end
+                    formatted_message += p0 + div_mark + p
+            formatted_message += (total_indent3 if empty else total_indent1) + line + end
+            
         if ne:
-            string += blank_p if prepend_stuff else ''
-            string += (total_indent1 if d else total_indent0) + end
-        string = string[:-1] # remove final newline character
-        return string
+            if prepend_stuff:
+                formatted_message += blank_p
+            formatted_message += total_indent3 + '\n'
+
+        return formatted_message
 
     ''' convert_bytes(b)
 

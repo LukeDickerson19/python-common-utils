@@ -10,7 +10,7 @@
 > - print memory usage of code when string was printed
 > - print to console and to file individually or simultaniously
 >
-> also available in C lang [here](https://github.com/LukeDickerson19/c-common-utils/tree/master/utils/log_utils).
+> also available in [C lang](https://github.com/LukeDickerson19/c-common-utils/tree/master/utils/log_utils) and [Odin lang](https://github.com/LukeDickerson19/odin-common-utils/tree/master/utils/logging_util).
 
 #### USAGE
 ```

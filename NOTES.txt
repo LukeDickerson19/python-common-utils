@@ -2,8 +2,7 @@
 
 TODO:
 
-    none
-
+    make the python logging_utils thread safe like the c log_utils are
 
 BACKLOG:
 
